@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fresh Market :: Admin View</title>
+    <link rel="stylesheet" href="./admin.css"/>
+</head>
+<body>
+    <h1>Products</h1>
+    <table id="productTable">
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Quantity On Hand</th>
+            <th>Price</th>
+            <th>Options</th>
+        </tr>
+        <tr>
+            <td>
+                <div class="productImageContainer">
+                    <img src="./img/kelloggscornflakes.jpeg" alt="Kellogg's Corn Flakes" width="128px"/>
+                </div>
+            </td>
+            <td>
+                <div class="tableInputContainer">
+                    <input class="tableInput" value="Kellogg's Corn Flakes"/>
+                </div>
+            </td>
+            <td>
+                <div class="tableInputContainer">
+                    <input class="tableInput" value="35"/>
+                </div>
+            </td>
+            <td>
+                <div class="tableInputContainer">
+                    <input class="tableInput" value="4.99"/>
+                </div>
+            <td>
+                <div class="options">
+                    <button>Update</button>
+                    <button>Remove</button>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="productImageContainer">
+                    <img src="./img/goyaoliveoil.png" alt="Goya Extra Virgin Olive Oil" width="128px"/>
+                </div>
+            </td>
+            <td>
+                <div class="tableInputContainer">
+                    <input class="tableInput" value="Goya Extra Virgin Olive Oil"/></td>
+                </div>
+            <td>
+                <div class="tableInputContainer">
+                    <input class="tableInput" value="15"/>
+                </div>
+            </td>
+            <td>
+                <div class="tableInputContainer">
+                    <input class="tableInput" value="10.99">
+                </div>
+            </td>
+            <td>
+                <div class="options">
+                    <button>Update</button>
+                    <button>Remove</button>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="productImageContainer">
+                    <img src="./img/garelickwholemilk.jpg" alt="Garelick Farms Whole Milk" width="128px"/>
+                </div>    
+            </td>
+            <td>
+                <div class="tableInputContainer">
+                    <input class="tableInput" value="Garelick Farms Whole Milk"/>
+                </div>
+            </td>
+            <td>
+                <div class="tableInputContainer">
+                    <input class="tableInput" value="8"/>
+                </div>
+            </td>
+            <td>
+                <div class="tableInputContainer">
+                    <input class="tableInput" value="3.99">
+                </div>
+            </td>
+            <td>
+                <div class="options">
+                    <button>Update</button>
+                    <button>Remove</button>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <h3>Add new product</h3>
+    <div id="newProductDiv">
+        <label for="productName">Product Name</label>
+        <input name="productName"/>
+        <label for="qoh">Quantity On Hand</label>
+        <input name="qoh"/>
+        <label for="price">Price</label>
+        <input name="price"/>
+        <button>Select image...</button>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
