@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fresh Market :: Admin View</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Agu+Display&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./admin.css" />
+</head>
+
+<body>
+    <div id="header">
+        <h1>Fresh Market</h1>
+    </div>
+    <main>
+        <h1 style="text-align: center;">Admin View</h1>
+        <h2>Products</h2>
+        <table id="productTable">
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Quantity On Hand</th>
+                <th>Price</th>
+                <th>Options</th>
+            </tr>
+            <tr>
+                <td>
+                    <div class="productImageContainer">
+                        <img src="./img/kelloggscornflakes.jpeg" alt="Kellogg's Corn Flakes" width="128px" />
+                    </div>
+                </td>
+                <td>
+                    <div class="tableInputContainer">
+                        <input class="tableInput" value="Kellogg's Corn Flakes" />
+                    </div>
+                </td>
+                <td>
+                    <div class="tableTextareaContainer">
+                        <textarea>Made from toasted corn, this classic breakfast cereal is a delicious and nutritious way to fuel your morning. High in vitamins and minerals, it's perfect with milk or as a crunchy topping for yogurt.</textarea>
+                    </div>
+                </td>
+                <td>
+                    <div class="tableInputContainer">
+                        <input class="tableInput" value="35" />
+                    </div>
+                </td>
+                <td>
+                    <div class="tableInputContainer">
+                        <input class="tableInput" value="4.99" />
+                    </div>
+                <td>
+                    <div class="options">
+                        <button>Update</button>
+                        <button>Remove</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="productImageContainer">
+                        <img src="./img/goyaoliveoil.png" alt="Goya Extra Virgin Olive Oil" width="128px" />
+                    </div>
+                </td>
+                <td>
+                    <div class="tableInputContainer">
+                        <input class="tableInput" value="Goya Extra Virgin Olive Oil" />
+                    </div>
+                </td>
+                <td>
+                    <div class="tableTextareaContainer">
+                        <textarea>Elevate your cooking with Goya Extra Virgin Olive Oil, crafted from the finest olives. This premium, cold-pressed oil offers a rich, smooth flavor, ideal for drizzling, sautéing, or dressing salads. Packed with heart-healthy fats, it's a versatile kitchen essential.</textarea>
+                    </div>
+                </td>
+                <td>
+                    <div class="tableInputContainer">
+                        <input class="tableInput" value="15" />
+                    </div>
+                </td>
+                <td>
+                    <div class="tableInputContainer">
+                        <input class="tableInput" value="10.99">
+                    </div>
+                </td>
+                <td>
+                    <div class="options">
+                        <button>Update</button>
+                        <button>Remove</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="productImageContainer">
+                        <img src="./img/garelickwholemilk.jpg" alt="Garelick Farms Whole Milk" width="128px" />
+                    </div>
+                </td>
+                <td>
+                    <div class="tableInputContainer">
+                        <input class="tableInput" value="Garelick Farms Whole Milk" />
+                    </div>
+                </td>
+                <td>
+                    <div class="tableTextareaContainer">
+                        <textarea>Garelick Farms Whole Milk delivers rich, creamy flavor in every glass. Sourced from local farms, it's packed with essential vitamins and nutrients like calcium and vitamin D, making it perfect for drinking, cooking, or baking. Enjoy the wholesome goodness in every sip.</textarea>
+                    </div>
+                </td>
+                <td>
+                    <div class="tableInputContainer">
+                        <input class="tableInput" value="8" />
+                    </div>
+                </td>
+                <td>
+                    <div class="tableInputContainer">
+                        <input class="tableInput" value="3.99">
+                    </div>
+                </td>
+                <td>
+                    <div class="options">
+                        <button>Update</button>
+                        <button>Remove</button>
+                    </div>
+                </td>
+            </tr>
+            <tr id="newProductRow">
+                <td>
+                    <div class="productImageContainer">
+                        <button id="newImageButton">Select an image...</button>
+                    </div>
+                </td>
+                <td>
+                    <div class="tableInputContainer">
+                        <input class="tableInput" placeholder="Product Name" />
+                    </div>
+                </td>
+                <td>
+                    <div class="tableTextareaContainer">
+                        <textarea placeholder="A brief description..."></textarea>
+                    </div>
+                </td>
+                <td>
+                    <div class="tableInputContainer">
+                        <input class="tableInput" placeholder="Quantity On Hand" />
+                    </div>
+                </td>
+                <td>
+                    <div class="tableInputContainer">
+                        <input class="tableInput" placeholder="Price">
+                    </div>
+                </td>
+                <td>
+                    <div class="options">
+                        <button>Add product</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <!-- <div style="display: flex;">
+            <div id="newProductContainer">
+                <h3>Add new product</h3>
+                <label for="productName">Product Name</label>
+                <input name="productName" />
+                <label for="qoh">Quantity On Hand</label>
+                <input name="qoh" />
+                <label for="price">Price</label>
+                <input name="price" />
+                <button>Select image...</button>
+                <button type="submit">Submit</button>
+            </div>
+        </div> -->
+    </main>
+</body>
+
+</html>
