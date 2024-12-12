@@ -19,10 +19,12 @@ table {
     border: 2px solid rgb(31, 29, 29);
     width: 100%;
     border-collapse: collapse;
+    height: 100%;
 }
 
 td {
     border-top: 2px solid rgb(31, 29, 29);
+    height: 100%;
 }
 
 .productImageContainer {
@@ -35,13 +37,18 @@ td {
     flex-direction: column;
 }
 
-.tableInputContainer, .tableTextareaContainer {
+.tableInputContainer {
     padding: 0 15px;
+}
+
+.tableTextareaContainer {
+    padding: 5px 15px;
+    height: 100%;
 }
 
 input, textarea {
     width: 100%;
-    background-color: lightgray;
+    background-color: whitesmoke;
     color: black;
     border: 1px solid gray;
     border-radius: 10px;
@@ -53,7 +60,9 @@ input {
 }
 
 textarea {
-    padding: 5px;
+    padding: 5px 0 0 5px;
+    resize: none;
+    height: 90%;
 }
 
 #newProductContainer {
@@ -69,7 +78,7 @@ textarea {
 }
 
 #newImageButton {
-    width: 128px; 
+    width: 128px;
     height: 128px;
     background-color: white;
     /* outline: 2px solid gray; */
@@ -77,5 +86,9 @@ textarea {
 }
 
 #newProductRow {
-    background-color: #d5ffdd;
+    background-color: #e8f4ed;
+}
+
+#newProductRow > td > div > input, #newProductRow > td > div > textarea {
+    background-color: whitesmoke;
 }
