@@ -4,14 +4,21 @@ import Button, {ButtonStyle} from '../../components/Button'
 import {useNavigate} from 'react-router-dom'
 import {postman} from '../../postman'
 import {AxiosError} from 'axios'
+import {JwtPayload} from 'jwt-decode'
+import {useAuth} from '../../hooks/useAuth'
+import {jwtDecode} from 'jwt-decode'
 
 // @ts-ignore
 import produceImage from "../../images/fresh-produce.jpg"
 
 interface Props {}
+interface IJwtPayload extends JwtPayload{
+    role?: string,
+}
 
 const Login: React.FC<Props> = () => {
     const navigate = useNavigate()
+    const auth = useAuth()
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [error, setError] = useState<string | null>(null)
@@ -24,7 +31,14 @@ const Login: React.FC<Props> = () => {
                 username: username,
                 password: password
             }).then((response) => {
-                sessionStorage.setItem('token', response.data.token)
+                const token = response.data.token
+                sessionStorage.setItem('token', token)
+                auth.setAuthenticated(true)
+                const decodedToken: IJwtPayload = jwtDecode(token)
+                if (decodedToken.role != null) {
+                    if (decodedToken.role === 'customer' || decodedToken.role === 'admin') auth.setRole(decodedToken.role)
+                    else auth.setRole('default')
+                }
                 navigate('/')
             }).catch((error) => {
                 if (error instanceof AxiosError) {
