@@ -17,3 +17,4 @@ argon2:
   memory: 65536
   iterations: 8
 
+clientOrigin: http://localhost:3000
