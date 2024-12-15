@@ -27,8 +27,10 @@ public class ServerConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000", CLIENT_ORIGIN)
-                .allowedMethods("GET", "HEAD", "POST", "PUT");
+        registry.addMapping("/**") // Allow requests to all endpoints
+                .allowedOrigins("http://localhost:3000", CLIENT_ORIGIN) // Allow specific origin
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allow specific HTTP methods
+                .allowedHeaders("*") // Allow all headers
+                .allowCredentials(true); // Allow sending cookies or authentication headers
     }
 }
