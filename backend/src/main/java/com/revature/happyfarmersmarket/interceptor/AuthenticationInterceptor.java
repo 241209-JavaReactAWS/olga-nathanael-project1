@@ -23,9 +23,9 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     static {
         OPEN_ENDPOINTS = new HashSet<>();
-        OPEN_ENDPOINTS.add("/login");
-        OPEN_ENDPOINTS.add("/register");
-        OPEN_ENDPOINTS.add("/products");
+        OPEN_ENDPOINTS.add("/api/**/login");
+        OPEN_ENDPOINTS.add("/api/**/register");
+        OPEN_ENDPOINTS.add("/api/**/products");
     }
 
     private final JwtService jwtService;
@@ -50,7 +50,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         Optional<Claims> claims = this.jwtService.verifyToken(token);
         if (claims.isPresent()) {
             request.setAttribute("authClaims", claims.get());
-            if (pathMatcher.match("/admin/**", request.getRequestURI())) {
+            if (pathMatcher.match("/api/**/admin/**", request.getRequestURI())) {
                 return claims.get().get("role").equals("admin");
             }
             return true;
