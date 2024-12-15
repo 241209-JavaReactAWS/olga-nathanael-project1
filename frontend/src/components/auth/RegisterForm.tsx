@@ -138,82 +138,84 @@ const RegisterForm: React.FC<Props> = () => {
     };
 
     return (
-        <div className="form-container">
-            <form className="form" onSubmit={handleSubmit}>
-                <h2>Register</h2>
+        <div className="main-container">
+            <div className="form-container">
+                <form className="form" onSubmit={handleSubmit}>
+                    <h2>Register</h2>
 
-                <label htmlFor="firstName">First name</label>
-                <input
-                    type="text"
-                    id="firstName"
-                    name="firstName"
-                    required
-                    value={formData.firstName}
-                    onChange={handleChange}
-                />
-                {errors.firstName && <span className="error">{errors.firstName}</span>}
+                    <label htmlFor="firstName">First name</label>
+                    <input
+                        type="text"
+                        id="firstName"
+                        name="firstName"
+                        required
+                        value={formData.firstName}
+                        onChange={handleChange}
+                    />
+                    {errors.firstName && <span className="error">{errors.firstName}</span>}
 
-                <label htmlFor="lastName">Last name</label>
-                <input
-                    type="text"
-                    id="lastName"
-                    name="lastName"
-                    required
-                    value={formData.lastName}
-                    onChange={handleChange}
-                />
-                {errors.lastName && <span className="error">{errors.lastName}</span>}
+                    <label htmlFor="lastName">Last name</label>
+                    <input
+                        type="text"
+                        id="lastName"
+                        name="lastName"
+                        required
+                        value={formData.lastName}
+                        onChange={handleChange}
+                    />
+                    {errors.lastName && <span className="error">{errors.lastName}</span>}
 
-                <label htmlFor="username">Username</label>
-                <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    required
-                    value={formData.username}
-                    onChange={handleChange}
-                />
-                {errors.username && <span className="error">{errors.username}</span>}
+                    <label htmlFor="username">Username</label>
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        required
+                        value={formData.username}
+                        onChange={handleChange}
+                    />
+                    {errors.username && <span className="error">{errors.username}</span>}
 
-                <label htmlFor="email">Email</label>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                />
-                {errors.email && <span className="error">{errors.email}</span>}
+                    <label htmlFor="email">Email</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
+                        value={formData.email}
+                        onChange={handleChange}
+                    />
+                    {errors.email && <span className="error">{errors.email}</span>}
 
-                <label htmlFor="password">Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    required
-                    value={formData.password}
-                    onChange={handleChange}
-                />
-                {errors.password && <span className="error">{errors.password}</span>}
+                    <label htmlFor="password">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        required
+                        value={formData.password}
+                        onChange={handleChange}
+                    />
+                    {errors.password && <span className="error">{errors.password}</span>}
 
-                <label htmlFor="confirmPassword">Confirm Password</label>
-                <input
-                    type="password"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    required
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                />
-                {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
+                    <label htmlFor="confirmPassword">Confirm Password</label>
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        required
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                    />
+                    {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
 
-                {apiError && <div className="error">{apiError}</div>}
+                    {apiError && <div className="error">{apiError}</div>}
 
-                <button type="submit" disabled={isLoading}>
-                    {isLoading ? 'Registering' : 'Register'}
-                </button>
-            </form>
+                    <button type="submit" disabled={isLoading}>
+                        {isLoading ? 'Registering' : 'Register'}
+                    </button>
+                </form>
+            </div>
         </div>
     );
 };

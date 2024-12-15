@@ -1,52 +1,47 @@
-// import React from 'react'
+import { useNavigate } from 'react-router-dom';
 import './styles.css';
 
-const ItemCard: React.FC = () => {
+interface Props {
+    item: Item;
+}
+
+interface Item {
+    id: number;
+    name: string;
+    imageURL: string;
+    price: number;
+}
+
+const ItemCard: React.FC<Props> = ({ item }) => {
+    const navigate = useNavigate();
 
     function handleItemClick() {
-        console.log('Item clicked');
+        console.log('Item clicked', item.id);
+        navigate(`/product/${item.id}`, { state: { product: item } });
+
     }
 
     return (
-        <div className="list-container">
-            <section className="item-details-container">
+        <div>
+            <section className="item-card-container">
                 <div>
-                    <img
-                        src="https://images.ctfassets.net/lufu0clouua1/Cpno7p5su5gH1hphtMEz5/c6d201efa4cd6794b1ff3cf973719d6f/2024_ultimate-holiday-meal-beauty-shot-NO-PIE.jpg"
-                        alt="Item Name"
-                        width="250"
+                    <img className="item-image"
+                        src={item.imageURL}
+                        alt={item.name}
                         onClick={handleItemClick}
                     />
                 </div>
-                <div className="meal-details">
-                    <h2>Organic Whole Turkey</h2>
-                    <select className="qty-select" name="" id="">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                    <p>$199.99</p>
-                    <button>Add to Cart</button>
-                </div>
-            </section>
-
-            <section className="item-details-container">
-                <div>
-                    <img
-                        src="https://images.ctfassets.net/lufu0clouua1/Cpno7p5su5gH1hphtMEz5/c6d201efa4cd6794b1ff3cf973719d6f/2024_ultimate-holiday-meal-beauty-shot-NO-PIE.jpg"
-                        alt="Item Name"
-                        width="250"
-                    />
-                </div>
-                <div className="meal-details">
-                    <h2>Organic Whole Turkey</h2>
-                    <select className="qty-select" name="" id="">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                    <p>$199.99</p>
-                    <button>Add to Cart</button>
+                <div className="item-details">
+                    <h2 className="item-name">{item.name}</h2>
+                    <div className="price-container">
+                        <select className="qty-select" name="" id="">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                        <p>{`$${item.price}`}</p>
+                    </div>
+                    <button className="add-to-cart-btn">Add to Cart</button>
                 </div>
             </section>
         </div>
