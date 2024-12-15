@@ -1,0 +1,42 @@
+.productCard {
+    display: flex;
+    background-color: whitesmoke;
+    padding: 5px 15px;
+    height: 300px;
+    width: 600px;
+    gap: 25px;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.productCard:hover {
+    background-color: #edecec;
+}
+
+.productImage {
+    display: flex;
+}
+
+.productImage > img {
+    margin: auto;
+}
+
+.productData {
+    display: flex;
+    flex-direction: column;
+}
+
+.productData2 {
+    display: flex;
+}
+
+.productOptions {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.productOptions > div > button {
+    width: 100%;
+    margin: 5px 0;
+}
