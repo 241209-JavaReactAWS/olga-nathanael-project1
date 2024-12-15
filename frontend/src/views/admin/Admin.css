@@ -1,7 +1,9 @@
-.productsListing {
-    margin: 5px;
-    display: flex;
-    flex-wrap: wrap;
-    align-content: center;
-    justify-content: space-evenly;
+#adminView {
+    padding: 8px;
+}
+
+#productTable {
+    border: 2px solid rgb(31, 29, 29);
+    width: 100%;
+    border-collapse: collapse;
 }

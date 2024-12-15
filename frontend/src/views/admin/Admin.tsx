@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import IProduct from '../../components/IProduct'
-import ProductCard from '../../components/ProductCard'
-import "./Admin.css"
+import './Admin.css'
+import ProductTableRow from '../../components/ProductTableRow'
+import NewProductTableRow from '../../components/NewProductTableRow'
 
-interface Props {}
+interface Props {
+}
 
 const Admin: React.FC<Props> = () => {
     const [products, setProducts] = useState<Array<IProduct>>([])
@@ -41,12 +43,38 @@ const Admin: React.FC<Props> = () => {
         ])
     }, [])
 
-    return <>
+    return <div id='adminView'>
         <h1>Admin</h1>
-        <div className='productsListing'>
-            {products.map((product) => <ProductCard product={product} key={product.id} />)}
-        </div>
-    </>
+        <h2>Products</h2>
+        <table id="productTable">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Quantity On Hand</th>
+                    <th>Price</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody>
+            {products.map((product) => <ProductTableRow product={product} key={product.id}/>)}
+            <tr>
+                <td>
+                    <div>
+                        <h3 style={{paddingLeft: '10px'}}>Add new product...</h3>
+                    </div>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <NewProductTableRow />
+            </tbody>
+        </table>
+    </div>
 }
 
-export default Admin;
+export default Admin

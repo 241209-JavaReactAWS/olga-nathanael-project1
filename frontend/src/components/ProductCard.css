@@ -3,10 +3,11 @@
     background-color: whitesmoke;
     padding: 5px 15px;
     height: 300px;
-    width: 600px;
+    width: 100%;
     gap: 25px;
     border: 1px solid black;
     border-radius: 10px;
+    justify-content: space-evenly;
 }
 
 .productCard:hover {

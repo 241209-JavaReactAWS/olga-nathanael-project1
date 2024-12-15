@@ -30,3 +30,7 @@
     border-color: #DC343B;
     color: white;
 }
+
+.dangerButton:hover {
+    background-color: #fb3d44;
+}
