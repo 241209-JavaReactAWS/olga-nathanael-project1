@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import "./Login.css"
-import Button, {ButtonStyle} from '../../components/Button'
+import Button, {ButtonStyle} from '../../components/button/Button'
 import {useNavigate} from 'react-router-dom'
 import {postman} from '../../postman'
 import {AxiosError} from 'axios'
