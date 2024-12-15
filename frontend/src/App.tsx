@@ -2,10 +2,10 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Product from './views/Product';
 import Registration from './views/Registration';
-import AllProducts from './views/AllProducts';
 import Header from './components/header/Header'
 import Login from './views/login/Login'
 import {AuthProvider} from './hooks/AuthProvider'
+import ItemsList from './views/ItemsList';
 
 function App() {
   return (
@@ -14,9 +14,10 @@ function App() {
               <Router>
                   <Header/>
                   <Routes>
-                      <Route path="/" element={<AllProducts/>}/>
+                      <Route path="/" element={<ItemsList />} />
                       <Route path="/register" element={<Registration/>}/>
                       <Route path="/product" element={<Product/>}/>
+                      <Route path="/products" element={<ItemsList />} />
                       <Route path="/login" element={<Login/>}/>
                   </Routes>
               </Router>

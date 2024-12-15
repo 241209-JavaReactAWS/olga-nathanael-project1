@@ -9,9 +9,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/")
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/v1")
 public class UserController {
     private final UserService userService;
 
@@ -29,10 +34,17 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
+        Map<String, Object> response = new HashMap<>();
         try {
             User registeredUser = this.userService.registerUser(user);
-            if (registeredUser != null) return ResponseEntity.status(201).body(registeredUser);
-            else return ResponseEntity.internalServerError().build();
+
+            if (registeredUser != null) {
+                response.put("success", true);
+                response.put("message", "User registered successfully");
+                response.put("data", registeredUser);
+
+                return ResponseEntity.status(201).body(response);
+            } else return ResponseEntity.internalServerError().build();
         } catch (RegistrationException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
