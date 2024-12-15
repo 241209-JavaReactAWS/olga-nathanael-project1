@@ -1,0 +1,23 @@
+.primaryButton {
+    height: 30px;
+    font-size: 14px;
+    background-color: #319A44;
+    border: 1px solid #319A44;
+    color: white;
+}
+
+.primaryButton:hover {
+    background-color: #3BBA52;
+}
+
+.secondaryButton {
+    height: 30px;
+    font-size: 14px;
+    background-color: #0C4767;
+    border: 1px solid #0C4767;
+    color: white;
+}
+
+.secondaryButton:hover {
+    background-color: #3BBA52;
+}
