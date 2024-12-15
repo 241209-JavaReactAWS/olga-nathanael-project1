@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useState} from 'react'
 import ProductCardInput from './ProductCardInput'
 import ProductCardTextArea from './ProductCardTextArea'
-import Button, {ButtonStyle} from './Button'
+import Button, {ButtonStyle} from './button/Button'
 import IProduct from './IProduct'
 import "./ProductCard.css"
 

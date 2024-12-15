@@ -2,7 +2,7 @@ import React, {ChangeEvent, useState} from 'react'
 import IProduct from './IProduct'
 import ProductCardInput from './ProductCardInput'
 import ProductCardTextArea from './ProductCardTextArea'
-import Button, {ButtonStyle} from './Button'
+import Button, {ButtonStyle} from "./button/Button"
 import "./ProductTableRow.css"
 
 interface Props {
