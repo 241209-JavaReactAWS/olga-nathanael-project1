@@ -1,11 +1,14 @@
-import React from 'react';
+import React from "react";
+import RegisterForm from "../components/auth/RegisterForm";
 
-interface Props {}
+interface Props { }
+
 
 const Registration: React.FC<Props> = () => {
+
   return (
     <div>
-      <h1>Register</h1>
+      <RegisterForm />
     </div>
   );
 };
