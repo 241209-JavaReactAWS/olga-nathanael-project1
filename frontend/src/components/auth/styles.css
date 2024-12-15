@@ -4,7 +4,7 @@
   box-sizing: border-box;
 }
 
-body {
+.main-container {
   font-family: "Roboto", sans-serif;
   background: linear-gradient(135deg, #2b8739, #56ab2f);
   display: flex;

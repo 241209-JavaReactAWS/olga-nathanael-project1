@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Entity
 @Table(name = "products")
@@ -19,5 +18,6 @@ public class Product {
     private String description;
     private double price;
     private int quantityOnHand;
+    @Column(length = 100000)
     private String imageURL;
 }
