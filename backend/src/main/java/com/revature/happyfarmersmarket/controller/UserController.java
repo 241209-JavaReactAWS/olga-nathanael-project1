@@ -9,12 +9,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@RestController("/")
+@RestController
+@RequestMapping("/api/v1")
 public class UserController {
     private final UserService userService;
 
@@ -30,7 +32,7 @@ public class UserController {
         else return ResponseEntity.ok(token);
     }
 
-    @PostMapping("/api/v1/register")
+    @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
         Map<String, Object> response = new HashMap<>();
         try {
