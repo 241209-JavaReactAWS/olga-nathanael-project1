@@ -4,7 +4,8 @@ import './Admin.css'
 import ProductTableRow from '../../components/ProductTableRow'
 import NewProductTableRow from '../../components/NewProductTableRow'
 
-interface Props {}
+interface Props {
+}
 
 const Admin: React.FC<Props> = () => {
     const [products, setProducts] = useState<Array<IProduct>>([])
