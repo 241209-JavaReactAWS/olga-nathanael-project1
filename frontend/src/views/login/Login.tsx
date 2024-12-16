@@ -36,7 +36,8 @@ const Login: React.FC<Props> = () => {
                 auth.setAuthenticated(true)
                 const decodedToken: IJwtPayload = jwtDecode(token)
                 if (decodedToken.role != null) {
-                    if (decodedToken.role === 'customer' || decodedToken.role === 'admin') auth.setRole(decodedToken.role)
+                    if (decodedToken.role === 'customer' || decodedToken.role === 'admin')
+                        auth.setRole(decodedToken.role)
                     else auth.setRole('default')
                 }
                 navigate('/')

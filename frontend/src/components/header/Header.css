@@ -5,4 +5,5 @@
     color: white;
     font-size: 2rem;
     padding: 10px 0;
+    user-select: none;
 }

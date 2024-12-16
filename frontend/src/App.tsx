@@ -9,13 +9,15 @@ import { AuthProvider } from './hooks/AuthProvider'
 import AllProducts from './views/products/AllProducts';
 import Cart from './views/cart/Cart';
 import OrderSuccess from './views/order-success/OrderSuccess';
+import Navbar from './components/navbar/Navbar'
 
 function App() {
   return (
       <AuthProvider>
           <div id="App">
+              <Header/>
               <Router>
-                  <Header/>
+                  <Navbar />
                   <Routes>
                       <Route path="/" element={<AllProducts />} />
                       <Route path="/register" element={<Registration/>}/>
