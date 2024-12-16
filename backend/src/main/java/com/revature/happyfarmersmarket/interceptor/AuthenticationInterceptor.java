@@ -40,6 +40,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        logger.info("Received {} request at endpoint '{}'", request.getMethod(), request.getRequestURI());
         if (request.getMethod().equals("OPTIONS")) return true;
         if (OPEN_ENDPOINTS.stream().anyMatch((path) -> pathMatcher.match(path, request.getRequestURI()))) return true;
 
@@ -55,9 +56,13 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             request.setAttribute("authClaims", claims.get());
 
             if (pathMatcher.match("/api/v*/admin/**", request.getRequestURI())) {
-                return claims.get().get("role").equals("admin");
-            }
-            return true;
+                boolean isUserAdmin = claims.get().get("role").equals("admin");
+                if (isUserAdmin) return true;
+                else {
+                    response.sendError(403, "User does not have the required privileges.");
+                    return false;
+                }
+            } else return true;
         } else response.sendError(401, "Invalid authorization token");
         return false;
     }
