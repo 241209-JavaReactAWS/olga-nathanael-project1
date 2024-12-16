@@ -1,0 +1,5 @@
+#productTable {
+    border: 2px solid rgb(31, 29, 29);
+    width: 100%;
+    border-collapse: collapse;
+}

@@ -1,0 +1,11 @@
+#newProductRow {
+    background-color: #e8f4ed;
+}
+
+#newProductRow:hover {
+    background-color: #d7f3dd;
+}
+
+#newProductRow > td > div > input, #newProductRow > td > div > textarea {
+    background-color: whitesmoke;
+}

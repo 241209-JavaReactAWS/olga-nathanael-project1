@@ -41,7 +41,7 @@ select:hover {
   background-color: #54e810;
 }
 
-button {
+.item-details-container button {
   padding: 10px;
   border: none;
   border-radius: 2px;
@@ -53,6 +53,6 @@ button {
   width: 200px;
 }
 
-button:hover {
+.item-details-container button:hover {
   background-color: #54e810;
 }

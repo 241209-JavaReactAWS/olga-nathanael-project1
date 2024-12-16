@@ -1,0 +1,21 @@
+#adminView {
+    padding: 8px;
+    position: relative;
+}
+
+#adminHeader {
+    text-align: center;
+    margin-top: 10px;
+}
+
+#unauthorizedDiv {
+    color: #DC343B;
+    text-align: center;
+    /*border: 2px solid #DC343B;*/
+    margin-top: 20px;
+    /*text-underline: #DC343B;*/
+}
+
+#unauthorizedDiv > h1 {
+    border-bottom: 5px solid #DC343B;
+}

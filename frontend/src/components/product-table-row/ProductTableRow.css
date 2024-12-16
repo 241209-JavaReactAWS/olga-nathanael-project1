@@ -1,0 +1,32 @@
+tr:hover {
+    background-color: #f3f2f2;
+}
+
+td {
+    border-top: 2px solid rgb(31, 29, 29);
+    height: 100%;
+}
+
+.productImageContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.productOptions {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.tableInputContainer {
+    padding: 0 15px;
+}
+
+.tableInputContainer > input {
+    width: 100%;
+}
+
+.tableTextAreaContainer {
+    padding: 5px 15px;
+    height: 200px;
+}

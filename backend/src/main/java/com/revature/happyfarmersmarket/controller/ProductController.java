@@ -3,6 +3,8 @@ package com.revature.happyfarmersmarket.controller;
 import com.revature.happyfarmersmarket.exception.ProductException;
 import com.revature.happyfarmersmarket.model.Product;
 import com.revature.happyfarmersmarket.service.ProductService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1")
 public class ProductController {
+    private static final Logger logger = LogManager.getLogger();
     private final ProductService productService;
 
     @Autowired
@@ -44,16 +47,17 @@ public class ProductController {
 
     @PutMapping("/admin/products")
     public ResponseEntity<?> updateProduct(@RequestBody Product product) {
+        logger.info("Request received to update product: {}", product);
         try {
             Product createdProduct = this.productService.updateProduct(product);
             if (createdProduct == null) return ResponseEntity.internalServerError().build();
-            else return ResponseEntity.status(201).body(createdProduct);
+            else return ResponseEntity.ok(createdProduct);
         } catch (ProductException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @DeleteMapping("/products/{id}")
+    @DeleteMapping("/admin/products/{id}")
     public ResponseEntity<Product> deleteProduct(@PathVariable Integer id) {
         Product product = this.productService.deleteProduct(id);
         if (product == null) return ResponseEntity.notFound().build();

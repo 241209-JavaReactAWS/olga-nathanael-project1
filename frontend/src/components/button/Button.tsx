@@ -3,7 +3,8 @@ import "./Button.css"
 
 export enum ButtonStyle {
     PRIMARY = 'primaryButton',
-    SECONDARY = 'secondaryButton'
+    SECONDARY = 'secondaryButton',
+    DANGER = 'dangerButton',
 }
 
 interface Props {

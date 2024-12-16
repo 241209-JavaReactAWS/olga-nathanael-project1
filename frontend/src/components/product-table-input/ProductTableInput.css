@@ -1,0 +1,8 @@
+.productTableInput {
+    background-color: whitesmoke;
+    color: black;
+    border: 1px solid gray;
+    border-radius: 10px;
+    text-align: center;
+    padding: 5px 0;
+}

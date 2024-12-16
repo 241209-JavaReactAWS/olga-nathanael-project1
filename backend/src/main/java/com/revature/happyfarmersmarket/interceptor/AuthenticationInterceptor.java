@@ -5,6 +5,8 @@ import com.revature.happyfarmersmarket.service.JwtService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -18,14 +20,15 @@ import java.util.Set;
 
 @Component
 public class AuthenticationInterceptor implements HandlerInterceptor {
+    private static final Logger logger = LogManager.getLogger();
     private static final AntPathMatcher pathMatcher = new AntPathMatcher();
     private static final Set<String> OPEN_ENDPOINTS;
 
     static {
         OPEN_ENDPOINTS = new HashSet<>();
-        OPEN_ENDPOINTS.add("/api/**/login");
-        OPEN_ENDPOINTS.add("/api/**/register");
-        OPEN_ENDPOINTS.add("/api/**/products");
+        OPEN_ENDPOINTS.add("/api/v*/login");
+        OPEN_ENDPOINTS.add("/api/v*/register");
+        OPEN_ENDPOINTS.add("/api/v*/products");
     }
 
     private final JwtService jwtService;
@@ -37,6 +40,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        logger.info("Received {} request at endpoint '{}'", request.getMethod(), request.getRequestURI());
         if (request.getMethod().equals("OPTIONS")) return true;
         if (OPEN_ENDPOINTS.stream().anyMatch((path) -> pathMatcher.match(path, request.getRequestURI()))) return true;
 
@@ -50,10 +54,15 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         Optional<Claims> claims = this.jwtService.verifyToken(token);
         if (claims.isPresent()) {
             request.setAttribute("authClaims", claims.get());
-            if (pathMatcher.match("/api/**/admin/**", request.getRequestURI())) {
-                return claims.get().get("role").equals("admin");
-            }
-            return true;
+
+            if (pathMatcher.match("/api/v*/admin/**", request.getRequestURI())) {
+                boolean isUserAdmin = claims.get().get("role").equals("admin");
+                if (isUserAdmin) return true;
+                else {
+                    response.sendError(403, "User does not have the required privileges.");
+                    return false;
+                }
+            } else return true;
         } else response.sendError(401, "Invalid authorization token");
         return false;
     }

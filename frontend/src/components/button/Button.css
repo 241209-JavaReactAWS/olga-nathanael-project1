@@ -1,8 +1,13 @@
-.primaryButton {
+.primaryButton, .secondaryButton, .dangerButton {
     height: 30px;
     font-size: 14px;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.primaryButton {
     background-color: #319A44;
-    border: 1px solid #319A44;
+    border-color: #319A44;
     color: white;
 }
 
@@ -11,13 +16,21 @@
 }
 
 .secondaryButton {
-    height: 30px;
-    font-size: 14px;
     background-color: #0C4767;
-    border: 1px solid #0C4767;
+    border-color: #0C4767;
     color: white;
 }
 
 .secondaryButton:hover {
-    background-color: #3BBA52;
+    background-color: #156b9f;
+}
+
+.dangerButton {
+    background-color: #DC343B;
+    border-color: #DC343B;
+    color: white;
+}
+
+.dangerButton:hover {
+    background-color: #fb3d44;
 }
