@@ -2,6 +2,9 @@ import React, { useState, FormEvent } from "react";
 import { useNavigate } from 'react-router-dom';
 import "./styles.css";
 
+// @ts-ignore
+import img from "../../images/register.png";
+
 interface Props { }
 
 interface FormData {
@@ -138,32 +141,38 @@ const RegisterForm: React.FC<Props> = () => {
     };
 
     return (
-        <div className="main-container">
+        <div className="main-container" style={{ backgroundImage: `url(${img})` }}>
             <div className="form-container">
                 <form className="form" onSubmit={handleSubmit}>
                     <h2>Register</h2>
 
-                    <label htmlFor="firstName">First name</label>
-                    <input
-                        type="text"
-                        id="firstName"
-                        name="firstName"
-                        required
-                        value={formData.firstName}
-                        onChange={handleChange}
-                    />
-                    {errors.firstName && <span className="error">{errors.firstName}</span>}
+                    <div className="name-container">
+                        <div className="name-input">
+                            <label htmlFor="firstName">First name</label>
+                            <input
+                                type="text"
+                                id="firstName"
+                                name="firstName"
+                                required
+                                value={formData.firstName}
+                                onChange={handleChange}
+                            />
+                            {errors.firstName && <span className="error">{errors.firstName}</span>}
+                        </div>
 
-                    <label htmlFor="lastName">Last name</label>
-                    <input
-                        type="text"
-                        id="lastName"
-                        name="lastName"
-                        required
-                        value={formData.lastName}
-                        onChange={handleChange}
-                    />
-                    {errors.lastName && <span className="error">{errors.lastName}</span>}
+                        <div className="name-input">
+                            <label htmlFor="lastName">Last name</label>
+                            <input
+                                type="text"
+                                id="lastName"
+                                name="lastName"
+                                required
+                                value={formData.lastName}
+                                onChange={handleChange}
+                            />
+                            {errors.lastName && <span className="error">{errors.lastName}</span>}
+                        </div>
+                    </div>
 
                     <label htmlFor="username">Username</label>
                     <input
@@ -211,9 +220,15 @@ const RegisterForm: React.FC<Props> = () => {
 
                     {apiError && <div className="error">{apiError}</div>}
 
-                    <button type="submit" disabled={isLoading}>
-                        {isLoading ? 'Registering' : 'Register'}
-                    </button>
+
+
+
+                    <div className="form-actions">
+                        <button type="submit" disabled={isLoading}>
+                            {isLoading ? 'Registering' : 'Register'}
+                        </button>
+
+                    </div>
                 </form>
             </div>
         </div>
