@@ -3,28 +3,19 @@
     position: relative;
 }
 
-#productTable {
-    border: 2px solid rgb(31, 29, 29);
-    width: 100%;
-    border-collapse: collapse;
+#adminHeader {
+    text-align: center;
+    margin-top: 10px;
 }
 
-#warningDiv, #successDiv {
-
+#unauthorizedDiv {
+    color: #DC343B;
+    text-align: center;
+    /*border: 2px solid #DC343B;*/
+    margin-top: 20px;
+    /*text-underline: #DC343B;*/
 }
 
-#successDiv, #warningDiv {
-
-}
-
-#warningDiv {
-
-    color: white;
-}
-
-#successDiv {
-
-
-    border: 2px solid #24702f;
-
+#unauthorizedDiv > h1 {
+    border-bottom: 5px solid #DC343B;
 }
