@@ -1,21 +1,29 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import IProduct from '../../components/IProduct'
 import './Admin.css'
-import ProductTableRow from '../../components/ProductTableRow'
-import NewProductTableRow from '../../components/NewProductTableRow'
+import ProductTableRow from '../../components/product-table-row/ProductTableRow'
+import NewProductTableRow from '../../components/new-product-table-row/NewProductTableRow'
 import {postman} from '../../postman'
-
-// @ts-ignore
-import warningImg from "../../images/warning.png"
+import Snackbar, {SnackbarStyle} from '../../components/snackbar/Snackbar'
 
 interface Props {
 }
 
 const Admin: React.FC<Props> = () => {
     const [products, setProducts] = useState<Array<IProduct>>([])
-    const [error, setError] = useState<string | null>(null)
-    // @ts-ignore
-    const [success, setSuccess] = useState<string | null>(null)
+    const [error, setError] = useState<string>('')
+    const [success, setSuccess] = useState<string>('')
+
+    const onError = (message: string) => {
+        setError(message)
+        setTimeout(() => setError(''), 5000)
+    }
+
+    const onSuccess = (message: string) => {
+        setSuccess(message)
+        updateProductsListing()
+        setTimeout(() => setSuccess(''), 5000)
+    }
 
     const updateProductsListing = useCallback(() => {
         postman.get('/products')
@@ -23,6 +31,7 @@ const Admin: React.FC<Props> = () => {
                 setProducts(response.data)
             }).catch((error) => {
             console.log(error)
+            onError('Something\'s not working right now. Please try again later.')
         })
     }, [setProducts])
 
@@ -30,17 +39,7 @@ const Admin: React.FC<Props> = () => {
         updateProductsListing()
     }, [updateProductsListing])
 
-    const onError = (message: string) => {
-        setError(message)
-        setTimeout(() => setError(null), 5000)
-    }
-
-    const onSuccess = (message: string) => {
-        setSuccess(message)
-        setTimeout(() => setSuccess(null), 5000)
-    }
-
-    return <div id='adminView'>
+    return <div id="adminView">
         <h1>Admin</h1>
         <h2>Products</h2>
         <table id="productTable">
@@ -69,15 +68,11 @@ const Admin: React.FC<Props> = () => {
                 <td></td>
                 <td></td>
             </tr>
-            <NewProductTableRow onSave={updateProductsListing} onSuccess={onSuccess} onError={onError}/>
+            <NewProductTableRow onSuccess={onSuccess} onError={onError}/>
             </tbody>
         </table>
-        {error && <div id='warningDiv'>
-            <p>{error}</p>
-        </div>}
-        {success && <div id='successDiv'>
-            <p>{success}</p>
-        </div>}
+        <Snackbar open={Boolean(error)} style={SnackbarStyle.ERROR} message={error}/>
+        <Snackbar open={Boolean(success)} style={SnackbarStyle.SUCCESS} message={success}/>
     </div>
 
 }

@@ -1,10 +1,10 @@
 import React, {ChangeEvent, useState} from 'react'
-import IProduct from './IProduct'
-import ProductCardInput from './ProductCardInput'
-import ProductCardTextArea from './ProductCardTextArea'
-import Button, {ButtonStyle} from "./button/Button"
+import IProduct from '../IProduct'
+import ProductTableInput from '../product-table-input/ProductTableInput'
+import ProductTableTextArea from '../product-table-text-area/ProductTableTextArea'
+import Button, {ButtonStyle} from "../button/Button"
 import "./ProductTableRow.css"
-import {postman} from '../postman'
+import {postman} from '../../postman'
 
 interface Props {
     product: IProduct,
@@ -55,22 +55,22 @@ const ProductTableRow: React.FC<Props> = ({product, onSuccess, onError}) => {
         </td>
         <td>
             <div className="tableInputContainer">
-                <ProductCardInput value={name} onChange={(e) => setName(e.target.value)}/>
+                <ProductTableInput value={name} onChange={(e) => setName(e.target.value)}/>
             </div>
         </td>
         <td>
             <div className="tableTextAreaContainer">
-                <ProductCardTextArea value={description} onChange={(e) => setDescription(e.target.value)}/>
+                <ProductTableTextArea value={description} onChange={(e) => setDescription(e.target.value)}/>
             </div>
         </td>
         <td>
             <div className="tableInputContainer">
-                <ProductCardInput value={price} onChange={(e) => setPrice(e.target.value)}/>
+                <ProductTableInput value={price} onChange={(e) => setPrice(e.target.value)}/>
             </div>
         </td>
         <td>
             <div className="tableInputContainer">
-                <ProductCardInput value={quantityOnHand.toString()} onChange={handleQOHChange}/>
+                <ProductTableInput value={quantityOnHand.toString()} onChange={handleQOHChange}/>
             </div>
         </td>
         <td>

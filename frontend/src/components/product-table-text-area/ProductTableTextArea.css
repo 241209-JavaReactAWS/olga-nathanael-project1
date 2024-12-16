@@ -1,8 +1,10 @@
-.productCardInput {
+.productTableTextArea {
     background-color: whitesmoke;
     color: black;
     border: 1px solid gray;
     border-radius: 10px;
-    text-align: center;
-    padding: 5px 0;
+    padding: 5px 0 0 5px;
+    resize: none;
+    height: 90%;
+    width: 100%;
 }
