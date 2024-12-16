@@ -4,12 +4,15 @@ import ProductCardInput from './ProductCardInput'
 import ProductCardTextArea from './ProductCardTextArea'
 import Button, {ButtonStyle} from "./button/Button"
 import "./ProductTableRow.css"
+import {postman} from '../postman'
 
 interface Props {
     product: IProduct,
+    onSuccess: (message: string) => void,
+    onError: (message: string) => void,
 }
 
-const ProductTableRow: React.FC<Props> = ({product}) => {
+const ProductTableRow: React.FC<Props> = ({product, onSuccess, onError}) => {
     const [name, setName] = useState<string>(product.name)
     const [description, setDescription] = useState<string>(product.description)
     const [price, setPrice] = useState<string>(product.price.toFixed(2))
@@ -21,11 +24,27 @@ const ProductTableRow: React.FC<Props> = ({product}) => {
     }
 
     const handleUpdate = () => {
-        console.log(name)
+        if (name.length === 0) onError('The product name must be provided.')
+        else if (description.length === 0) onError('A description must be provided.')
+        else if (price.length === 0 || isNaN(Number(price))) onError('A valid price must be provided.')
+        else if (quantityOnHand === null) onError('Please provide quantity on hand.')
+        else {
+            postman.put('/admin/products', {
+                id: product.id,
+                name: name,
+                description: description,
+                price: Number(price),
+                quantityOnHand: quantityOnHand,
+                imageURL: product.imageURL
+            }).then(() => onSuccess('Product updated successfully!'))
+                .catch(() => onError('Unable to update product.'))
+        }
     }
 
     const handleDelete = () => {
-
+        postman.delete(`/admin/products/${product.id}`)
+            .then(() => onSuccess('Product deleted successfully!'))
+            .catch(() => onError('Unable to delete product.'))
     }
 
     return <tr>

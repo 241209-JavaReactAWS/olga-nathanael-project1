@@ -15,6 +15,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+    @Column(length = 100000)
     private String description;
     private double price;
     private int quantityOnHand;
