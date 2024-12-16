@@ -1,0 +1,20 @@
+.success-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  color: white;
+  text-align: center;
+}
+
+.custom-heading {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #2b8739;
+  text-align: center;
+  background-color: beige;
+  padding: 5.5rem;
+}

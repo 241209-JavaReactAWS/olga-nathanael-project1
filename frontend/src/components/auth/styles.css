@@ -6,12 +6,14 @@
 
 .main-container {
   font-family: "Roboto", sans-serif;
-  background: linear-gradient(135deg, #2b8739, #56ab2f);
+  margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  margin: 0;
+  background-size: cover;
+  background-position: center;
+  color: white;
 }
 
 .form-container {
@@ -19,7 +21,7 @@
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 300px;
+  width: auto;
 }
 
 .form {
@@ -27,9 +29,21 @@
   flex-direction: column;
 }
 
+.name-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.name-input {
+  display: flex;
+  flex-direction: column;
+}
+
 .form h2 {
-  margin-bottom: 20px;
+  margin-bottom: 40px;
   color: #2b8739;
+  text-align: center;
 }
 
 .form label {
@@ -40,7 +54,7 @@
 .form input {
   margin-bottom: 15px;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #319a44;
   border-radius: 4px;
   font-size: 1rem;
 }
@@ -57,4 +71,11 @@
 
 .form button:hover {
   background-color: #54e810;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  padding-bottom: 10px;
 }
