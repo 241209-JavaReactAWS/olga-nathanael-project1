@@ -4,6 +4,7 @@ import './ForgotPassword.css'
 import {useState} from 'react'
 import Button, {ButtonStyle} from '../../components/button/Button'
 import {postman} from '../../postman'
+import {useNavigate} from 'react-router-dom'
 
 export default function ForgotPassword() {
     const [username, setUsername] = useState('')
@@ -12,6 +13,8 @@ export default function ForgotPassword() {
     const [newPassword, setNewPassword] = useState('')
     const [confirmNewPassword, setConfirmNewPassword] = useState('')
     const [error, setError] = useState('')
+    const [success, setSuccess] = useState(false)
+    const navigate = useNavigate()
 
     const fetchSecurityQuestion = () => {
         if (username.length === 0) setError('Please enter a valid username')
@@ -25,6 +28,27 @@ export default function ForgotPassword() {
                     else if (error.response && error.response.status === 500)
                         setError('An internal server error occurred. Please try again.')
                     else setError('Something\'s not working right now, please try again later.')
+            })
+        }
+    }
+
+    const resetPassword = () => {
+        if (securityAnswer.length === 0) setError('Security question must be answered.')
+        else if (newPassword !== confirmNewPassword)
+            setError('Passwords must match')
+        else {
+            postman.post(`/resetPassword/${username}`, {
+                answer: securityAnswer,
+                newPassword: newPassword
+            }).then(() => {
+                setSuccess(true)
+                setTimeout(() => navigate('/login'), 5000)
+            }).catch((error) => {
+                if (error.response && error.response.status === 401)
+                    setError('Password reset failed. Incorrect answer to security question.')
+                else if (error.response && error.response.status === 500)
+                    setError('An internal server error occurred.')
+                else setError('Something\'s not working right now.')
             })
         }
     }
@@ -53,13 +77,16 @@ export default function ForgotPassword() {
             <input id="confirmPassword" type="password" value={confirmNewPassword}
                    onChange={(e) => setConfirmNewPassword(e.target.value)}/>
         </div>
-        <Button style={ButtonStyle.PRIMARY} onClick={fetchSecurityQuestion}>Reset</Button>
+        <Button style={ButtonStyle.PRIMARY} onClick={resetPassword}>Reset</Button>
     </>
 
     return <div id="forgotPassword" style={{backgroundImage: `url(${produceImage})`}}>
         <div id="forgotPasswordDiv">
             <h2>Reset Password</h2>
             {Boolean(securityQuestion) ? securityQuestionView : inputUsernameView}
+            {success && <div id='successDiv'>
+                <p>Password reset successfully.</p>
+            </div>}
             {error && <div id='errorDiv'>
                 <p>Error: {error}</p>
             </div>}
