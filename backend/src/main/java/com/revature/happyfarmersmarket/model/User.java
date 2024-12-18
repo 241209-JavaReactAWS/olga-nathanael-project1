@@ -1,5 +1,6 @@
 package com.revature.happyfarmersmarket.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,13 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private String role;
+
+    @ManyToOne
+    @JsonIgnore
+    private SecurityQuestion securityQuestion;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String securityAnswer;
 
     @OneToOne
     private Cart cart;
