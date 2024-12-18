@@ -19,11 +19,12 @@ export default function ForgotPassword() {
     const fetchSecurityQuestion = () => {
         if (username.length === 0) setError('Please enter a valid username')
         else {
-            postman.get(`/resetPassword/${username}`)
+            postman.get(`/reset-password/${username}`)
                 .then((res) => {
                     setSecurityQuestion(res.data)
+                    setError('')
                 }).catch((error) => {
-                    if (error.response && error.response.status === 404)
+                    if (error.response && error.response.status === 400)
                         setError('User not found')
                     else if (error.response && error.response.status === 500)
                         setError('An internal server error occurred. Please try again.')
@@ -37,14 +38,15 @@ export default function ForgotPassword() {
         else if (newPassword !== confirmNewPassword)
             setError('Passwords must match')
         else {
-            postman.post(`/resetPassword/${username}`, {
-                answer: securityAnswer,
+            postman.post(`/reset-password/${username}`, {
+                securityAnswer: securityAnswer,
                 newPassword: newPassword
             }).then(() => {
+                setError('')
                 setSuccess(true)
                 setTimeout(() => navigate('/login'), 5000)
             }).catch((error) => {
-                if (error.response && error.response.status === 401)
+                if (error.response && error.response.status === 400)
                     setError('Password reset failed. Incorrect answer to security question.')
                 else if (error.response && error.response.status === 500)
                     setError('An internal server error occurred.')
@@ -65,7 +67,7 @@ export default function ForgotPassword() {
         <div className="formField">
             <label id="securityQuestionLabel" htmlFor="securityQuestion"><strong>Security Question</strong></label>
             <p>{securityQuestion}</p>
-            <input id="securityQuestion" value={securityAnswer} onChange={(e) => setSecurityAnswer(e.target.value)}/>
+            <input type='password' id="securityQuestion" value={securityAnswer} onChange={(e) => setSecurityAnswer(e.target.value)}/>
         </div>
         <div className="formField">
             <label htmlFor="password">New Password</label>
