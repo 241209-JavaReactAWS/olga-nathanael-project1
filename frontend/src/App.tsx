@@ -10,6 +10,7 @@ import AllProducts from './views/products/AllProducts';
 import Cart from './views/cart/Cart';
 import OrderSuccess from './views/order-success/OrderSuccess';
 import Navbar from './components/navbar/Navbar'
+import ForgotPassword from './views/forgot-password/ForgotPassword'
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
                       <Route path="/admin" element={<Admin />}/>
                       <Route path="/cart" element={<Cart />} />
                       <Route path="/order-success" element={<OrderSuccess />} />
+                      <Route path='/forgot-password' element={<ForgotPassword />} />
                   </Routes>
               </Router>
           </div>
