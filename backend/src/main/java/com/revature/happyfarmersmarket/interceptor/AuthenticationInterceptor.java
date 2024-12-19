@@ -52,8 +52,15 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
         JwtToken token = new JwtToken(authorizationHeader.substring("Bearer ".length()));
         Optional<Claims> claims = this.jwtService.verifyToken(token);
+
         if (claims.isPresent()) {
-            request.setAttribute("authClaims", claims.get());
+
+            String username = claims.get().getSubject();
+            String roles = claims.get().get("role").toString();
+
+            UserDetails userDetails = new UserDetails(username, roles);
+
+            request.setAttribute("userDetails", userDetails);
 
             if (pathMatcher.match("/api/v*/admin/**", request.getRequestURI())) {
                 boolean isUserAdmin = claims.get().get("role").equals("admin");
@@ -66,4 +73,5 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         } else response.sendError(401, "Invalid authorization token");
         return false;
     }
+
 }
