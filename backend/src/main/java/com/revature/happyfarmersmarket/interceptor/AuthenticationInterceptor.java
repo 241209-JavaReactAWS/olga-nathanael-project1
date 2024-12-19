@@ -16,8 +16,6 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-// todo confirm login functionality
-
 @Component
 public class AuthenticationInterceptor implements HandlerInterceptor {
     private static final Logger logger = LogManager.getLogger();
@@ -29,6 +27,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         OPEN_ENDPOINTS.add("/api/v*/login");
         OPEN_ENDPOINTS.add("/api/v*/register");
         OPEN_ENDPOINTS.add("/api/v*/products");
+        OPEN_ENDPOINTS.add("/api/v*/security-questions");
+        OPEN_ENDPOINTS.add("/api/v*/reset-password/**");
     }
 
     private final JwtService jwtService;

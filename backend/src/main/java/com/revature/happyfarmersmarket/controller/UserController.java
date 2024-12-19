@@ -1,19 +1,17 @@
 package com.revature.happyfarmersmarket.controller;
 
 import com.revature.happyfarmersmarket.exception.RegistrationException;
-import com.revature.happyfarmersmarket.model.JwtToken;
-import com.revature.happyfarmersmarket.model.User;
+import com.revature.happyfarmersmarket.model.*;
 import com.revature.happyfarmersmarket.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -33,10 +31,10 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User user) {
+    public ResponseEntity<?> register(@RequestBody UserRegistration userRegistration) {
         Map<String, Object> response = new HashMap<>();
         try {
-            User registeredUser = this.userService.registerUser(user);
+            User registeredUser = this.userService.registerUser(userRegistration);
 
             if (registeredUser != null) {
                 response.put("success", true);
@@ -50,5 +48,21 @@ public class UserController {
         }
     }
 
-    // todo ask Bryan about registering Admin users
+    @GetMapping("/security-questions")
+    public ResponseEntity<List<SecurityQuestion>> getSecurityQuestions() {
+        return ResponseEntity.ok(this.userService.getSecurityQuestions());
+    }
+
+    @GetMapping("/reset-password/{username}")
+    public ResponseEntity<String> resetPassword(@PathVariable String username) {
+        Optional<String> securityQuestion = this.userService.getSecurityQuestion(username);
+        return securityQuestion.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.badRequest().build());
+    }
+
+    @PostMapping("/reset-password/{username}")
+    public ResponseEntity<?> resetPassword(@PathVariable String username, @RequestBody PasswordResetRequest passwordResetRequest) {
+        boolean result = this.userService.resetPassword(username, passwordResetRequest.securityAnswer(), passwordResetRequest.newPassword());
+        return result ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+    }
 }

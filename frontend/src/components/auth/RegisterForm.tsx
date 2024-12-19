@@ -1,5 +1,6 @@
-import React, { useState, FormEvent } from "react";
+import React, {useState, FormEvent, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom';
+import {postman} from '../../postman'
 import "./styles.css";
 
 // @ts-ignore
@@ -14,6 +15,8 @@ interface FormData {
     email: string;
     password: string;
     confirmPassword: string;
+    securityQuestion: number;
+    securityAnswer: string;
 }
 
 interface ApiResponse {
@@ -21,7 +24,13 @@ interface ApiResponse {
     message: string;
 }
 
+interface SecurityQuestion {
+    id: number,
+    securityQuestion: string,
+}
+
 const RegisterForm: React.FC<Props> = () => {
+    const [securityQuestions, setSecurityQuestions] = useState<Array<SecurityQuestion>>([])
     const [formData, setFormData] = useState<FormData>({
         firstName: "",
         lastName: "",
@@ -29,13 +38,23 @@ const RegisterForm: React.FC<Props> = () => {
         email: "",
         password: "",
         confirmPassword: "",
+        securityQuestion: 0,
+        securityAnswer: ""
     });
     const [errors, setErrors] = useState<Partial<FormData>>({});
     const [apiError, setApiError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const navigate = useNavigate();
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+    useEffect(() => {
+        postman.get('/security-questions')
+            .then((res) => {
+                setSecurityQuestions((res.data))
+            })
+    }, [])
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
 
         setFormData((prevData) => ({
@@ -84,6 +103,11 @@ const RegisterForm: React.FC<Props> = () => {
             isValid = false;
         }
 
+        if (!formData.securityAnswer) {
+            newErrors.password = 'Security answer is required';
+            isValid = false;
+        }
+
         setErrors(newErrors);
         return isValid;
 
@@ -107,6 +131,8 @@ const RegisterForm: React.FC<Props> = () => {
                         username: formData.username,
                         email: formData.email,
                         password: formData.password,
+                        securityQuestion: formData.securityQuestion,
+                        securityAnswer: formData.securityAnswer,
                     }),
                 });
 
@@ -126,6 +152,8 @@ const RegisterForm: React.FC<Props> = () => {
                         email: "",
                         password: "",
                         confirmPassword: "",
+                        securityQuestion: 0,
+                        securityAnswer: ""
                     });
                     navigate("/login");
                 } else {
@@ -217,6 +245,22 @@ const RegisterForm: React.FC<Props> = () => {
                         onChange={handleChange}
                     />
                     {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
+
+                    <label htmlFor="securityQuestion">Security Question</label>
+                    <select name='securityQuestion' onChange={handleChange} id='securityQuestion' style={{width: '100%'}}>
+                        {securityQuestions.map((q) => <option key={q.id} value={q.id}>{q.securityQuestion}</option> )}
+                    </select>
+
+                    <label htmlFor="securityAnswer">Security Answer</label>
+                    <input
+                        type="password"
+                        id="securityAnswer"
+                        name="securityAnswer"
+                        required
+                        value={formData.securityAnswer}
+                        onChange={handleChange}
+                    />
+                    {errors.securityAnswer && <span className="error">{errors.securityAnswer}</span>}
 
                     {apiError && <div className="error">{apiError}</div>}
 
