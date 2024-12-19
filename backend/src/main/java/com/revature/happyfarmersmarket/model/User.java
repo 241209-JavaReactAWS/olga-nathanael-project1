@@ -23,9 +23,9 @@ public class User {
     private String password;
     private String role;
 
-
     @ToString.Exclude
     @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
+    private Cart cart;
 
     @ManyToOne
     @JsonIgnore
@@ -33,7 +33,4 @@ public class User {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String securityAnswer;
-
-    @OneToOne
-    private Cart cart;
 }
