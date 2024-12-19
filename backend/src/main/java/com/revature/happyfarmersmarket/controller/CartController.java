@@ -1,6 +1,5 @@
 package com.revature.happyfarmersmarket.controller;
 
-import com.revature.happyfarmersmarket.dao.CartDAO;
 import com.revature.happyfarmersmarket.interceptor.UserDetails;
 import com.revature.happyfarmersmarket.payload.CartDTO;
 import com.revature.happyfarmersmarket.service.CartService;
@@ -13,26 +12,24 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1")
 public class CartController {
 
+    private final CartService cartService;
+
     @Autowired
-    public CartController(CartService cartService,  CartDAO cartDAO) {
+    public CartController(CartService cartService) {
         this.cartService = cartService;
     }
-
-    private final CartService cartService;
 
     @PostMapping("/carts/products/{productId}/quantity/{quantity}")
     public ResponseEntity<CartDTO> addProductToCart(@PathVariable Integer productId,
                                                     @PathVariable Integer quantity,
                                                     @RequestAttribute("userDetails") UserDetails userDetails) {
         CartDTO cartDTO = cartService.addProductToCart(productId, quantity, userDetails);
-        return new ResponseEntity<CartDTO>(cartDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(cartDTO, HttpStatus.CREATED);
     }
 
     @GetMapping("/carts/users/cart")
     public ResponseEntity<CartDTO> getCartById(@RequestAttribute("userDetails") UserDetails userDetails) {
-
        CartDTO cartDTO = cartService.getCart(userDetails.getUsername());
-       return new ResponseEntity<CartDTO>(cartDTO, HttpStatus.OK);
-
+       return new ResponseEntity<>(cartDTO, HttpStatus.OK);
     }
 }

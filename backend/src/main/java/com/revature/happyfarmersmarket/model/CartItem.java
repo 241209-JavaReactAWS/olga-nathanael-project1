@@ -12,8 +12,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartItem {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int cartItemId;
@@ -29,6 +27,4 @@ public class CartItem {
     private Product product;
 
     private Integer quantity;
-    private Double productPrice;
-
 }
