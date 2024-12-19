@@ -2,10 +2,12 @@ package com.revature.happyfarmersmarket.controller;
 
 import com.revature.happyfarmersmarket.exception.ProductException;
 import com.revature.happyfarmersmarket.model.Product;
+import com.revature.happyfarmersmarket.payload.ProductResponse;
 import com.revature.happyfarmersmarket.service.ProductService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,8 +43,9 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getAllProducts() {
-        return ResponseEntity.ok(this.productService.getAllProducts());
+    public ResponseEntity<ProductResponse> getAllProducts() {
+        ProductResponse productResponse = productService.getAllProducts();
+        return new ResponseEntity<>(productResponse,HttpStatus.OK);
     }
 
     @PutMapping("/admin/products")

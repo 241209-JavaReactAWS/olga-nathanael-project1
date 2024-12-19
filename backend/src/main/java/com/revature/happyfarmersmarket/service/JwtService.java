@@ -45,4 +45,34 @@ public class JwtService {
                 .signWith(this.secretKey)
                 .compact());
     }
+
+
+    // Extract username from the token
+    public String getUsernameFromToken(String token) {
+        return getClaimsFromToken(token).getSubject();
+    }
+
+    // Extract roles or other claims from the token
+    public String getRolesFromToken(String token) {
+        return getClaimsFromToken(token).get("roles", String.class); // Assuming "roles" is a claim
+    }
+
+    // Validate the token
+    public boolean validateToken(String token) {
+        try {
+            getClaimsFromToken(token); // Check if token can be parsed
+            return true;
+        } catch (Exception e) {
+            return false; // Invalid token
+        }
+    }
+
+    // Extract Claims from token
+    private Claims getClaimsFromToken(String token) {
+        try {
+            return this.jwtParser.parseSignedClaims(token).getPayload();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse JWT token: " + e.getMessage(), e);
+        }
+    }
 }

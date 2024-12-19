@@ -25,8 +25,8 @@ const AllProducts: React.FC<Props> = () => {
     const fetchProducts = async () => {
       const response = await fetch('http://localhost:8080/api/v1/products');
       const data = await response.json();
-      console.log(data);
-      setProducts(data);
+      console.log(data.data);
+      setProducts(data.data);
     };
 
 
