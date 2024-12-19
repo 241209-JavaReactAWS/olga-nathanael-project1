@@ -5,7 +5,6 @@ import com.revature.happyfarmersmarket.dao.ProductDAO;
 import com.revature.happyfarmersmarket.dao.UserDAO;
 import com.revature.happyfarmersmarket.exception.APIException;
 import com.revature.happyfarmersmarket.exception.ResourceNotFoundException;
-import com.revature.happyfarmersmarket.interceptor.AuthUtil;
 import com.revature.happyfarmersmarket.interceptor.UserDetails;
 import com.revature.happyfarmersmarket.model.Cart;
 import com.revature.happyfarmersmarket.model.CartItem;
@@ -15,11 +14,9 @@ import com.revature.happyfarmersmarket.payload.CartDTO;
 import com.revature.happyfarmersmarket.payload.ProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 import org.modelmapper.ModelMapper;
 
@@ -29,28 +26,29 @@ import org.apache.logging.log4j.Logger;
 @Service
 public class CartService {
 
+    @Autowired
+    public CartService(CartDAO cartDAO, ProductDAO productDAO, CartItemDAO cartItemDAO, UserService userService, UserDAO userDAO, StandardServletMultipartResolver standardServletMultipartResolver, ModelMapper modelMapper) {
+        this.cartDAO = cartDAO;
+        this.productDAO = productDAO;
+        this.cartItemDAO = cartItemDAO;
+        this.userDAO = userDAO;
+        this.modelMapper = modelMapper;
+    }
+
     private static final Logger logger = LogManager.getLogger();
 
-    @Autowired
-    private CartDAO cartDAO;
-    @Autowired
-    private ProductDAO productDAO;
-    @Autowired
-    private CartItemDAO cartItemDAO;
-    @Autowired
-    private AuthUtil authUtil;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private UserDAO userDAO;
-    @Autowired
-    private StandardServletMultipartResolver standardServletMultipartResolver;
+    private final CartDAO cartDAO;
 
-    @Autowired
-    ModelMapper modelMapper;
+    private final ProductDAO productDAO;
 
-    public CartDTO addProductToCart(Integer productId, Integer quantity) {
-       Cart cart = createCart();
+    private final CartItemDAO cartItemDAO;
+
+    private final UserDAO userDAO;
+
+    private final ModelMapper modelMapper;
+
+    public CartDTO addProductToCart(Integer productId, Integer quantity, UserDetails userDetails ) {
+       Cart cart = createCart(userDetails);
 
        Product product = productDAO.findById(productId)
                .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
@@ -101,9 +99,7 @@ public class CartService {
 
    }
 
-    private Cart createCart() {
-        // Retrieve cart for the current logged-in user
-        UserDetails userDetails = AuthUtil.loggedUser();
+    private Cart createCart(UserDetails userDetails) {
 
        logger.info("User details: {}", userDetails);
         Cart userCart = cartDAO.findCartByUsername(userDetails.getUsername());
@@ -127,9 +123,11 @@ public class CartService {
         return cartDAO.save(cart);
     }
 
-    public CartDTO getCart(String username, Integer cartId) {
+    public CartDTO getCart(String username) {
 
-        Cart cart = cartDAO.findCartByUsernameAndCartId(username, cartId);
+        Cart cart = cartDAO.findCartByUsername(username);
+
+        Integer cartId = cart.getCartId();
 
         if (cart == null) {
             throw new ResourceNotFoundException("Cart", "cartId", cartId);
@@ -150,4 +148,6 @@ public class CartService {
 
 
     }
+
+
 }
