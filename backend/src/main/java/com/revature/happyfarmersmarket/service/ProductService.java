@@ -3,20 +3,26 @@ package com.revature.happyfarmersmarket.service;
 import com.revature.happyfarmersmarket.dao.ProductDAO;
 import com.revature.happyfarmersmarket.exception.ProductException;
 import com.revature.happyfarmersmarket.model.Product;
+import com.revature.happyfarmersmarket.payload.ProductDTO;
+import com.revature.happyfarmersmarket.payload.ProductResponse;
 import lombok.NonNull;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
     private final ProductDAO productDAO;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public ProductService(ProductDAO productDAO) {
+    public ProductService(ProductDAO productDAO, ModelMapper modelMapper) {
         this.productDAO = productDAO;
+        this.modelMapper = modelMapper;
     }
 
     public Product createProduct(Product product) throws ProductException {
@@ -25,8 +31,16 @@ public class ProductService {
         return this.productDAO.save(product);
     }
 
-    public List<Product> getAllProducts() {
-        return this.productDAO.findAll();
+    public ProductResponse getAllProducts() {
+        List<Product> products = productDAO.findAll();
+        List<ProductDTO> productDTOS = products.stream()
+                .map(product -> modelMapper.map(product, ProductDTO.class))
+                .toList();
+
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setData( productDTOS);
+
+        return productResponse;
     }
 
     public Product getProduct(@NonNull Integer id) {

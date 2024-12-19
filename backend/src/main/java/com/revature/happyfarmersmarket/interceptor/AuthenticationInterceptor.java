@@ -52,6 +52,22 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
         JwtToken token = new JwtToken(authorizationHeader.substring("Bearer ".length()));
         Optional<Claims> claims = this.jwtService.verifyToken(token);
+
+        // get token as string and extract user details
+        String tokenStr = getTokenFromRequest(request);
+
+        if (token != null && jwtService.validateToken(tokenStr)) {
+            // Decode user-specific data from the token
+            String username = jwtService.getUsernameFromToken(tokenStr);
+            String roles = jwtService.getRolesFromToken(tokenStr);
+
+            // Populate and store UserDetails in AuthUtil
+            UserDetails userDetails = new UserDetails(username, roles);
+            AuthUtil.setLoggedUser(userDetails);
+
+        }
+
+
         if (claims.isPresent()) {
             request.setAttribute("authClaims", claims.get());
 
@@ -65,5 +81,14 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             } else return true;
         } else response.sendError(401, "Invalid authorization token");
         return false;
+    }
+
+
+    private String getTokenFromRequest(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7); // Remove "Bearer " prefix
+        }
+        return null;
     }
 }

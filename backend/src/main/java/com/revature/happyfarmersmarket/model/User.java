@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name="users")
@@ -21,6 +22,7 @@ public class User {
     private String password;
     private String role;
 
-    @OneToOne
+    @ToString.Exclude
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
     private Cart cart;
 }
