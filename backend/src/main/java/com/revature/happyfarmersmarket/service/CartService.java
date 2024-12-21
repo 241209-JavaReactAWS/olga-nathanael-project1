@@ -1,4 +1,5 @@
 package com.revature.happyfarmersmarket.service;
+
 import com.revature.happyfarmersmarket.dao.CartDAO;
 import com.revature.happyfarmersmarket.dao.CartItemDAO;
 import com.revature.happyfarmersmarket.dao.ProductDAO;
@@ -11,14 +12,12 @@ import com.revature.happyfarmersmarket.model.CartItem;
 import com.revature.happyfarmersmarket.model.Product;
 import com.revature.happyfarmersmarket.model.User;
 import com.revature.happyfarmersmarket.payload.CartDTO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
-
-import org.modelmapper.ModelMapper;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 @Service
 public class CartService {
@@ -39,52 +38,52 @@ public class CartService {
         this.modelMapper = modelMapper;
     }
 
-    public CartDTO addProductToCart(Integer productId, Integer quantity, UserDetails userDetails ) {
-       Cart cart = createCart(userDetails);
+    public CartDTO addProductToCart(Integer productId, Integer quantity, UserDetails userDetails) {
+        logger.info("Adding product with id `{}` to user `{}`'s cart. Quantity: {}", productId, userDetails.getUsername(), quantity);
+        Cart cart = createCart(userDetails);
 
-       Product product = productDAO.findById(productId)
-               .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
+        Product product = productDAO.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
 
-       CartItem cartItem = cartItemDAO.findCartItemByProductIdAndCartId(cart.getCartId(), productId);
+        CartItem cartItem = cartItemDAO.findCartItemByProductIdAndCartId(cart.getCartId(), productId);
 
-       if (cartItem != null) {
-           throw new APIException("Product " + product.getName() + "already exists in the cart");
-       }
+        if (cartItem != null) {
+            throw new APIException("Product " + product.getName() + "already exists in the cart");
+        }
 
         if (product.getQuantityOnHand() < quantity) {
             throw new APIException("Only " + product.getQuantityOnHand() + " left in stock.");
         }
 
-       if (product.getQuantityOnHand() == 0) {
-           throw new APIException("SOLD OUT");
-       }
+        if (product.getQuantityOnHand() == 0) {
+            throw new APIException("SOLD OUT");
+        }
 
-       CartItem newCartItem = new CartItem();
+        CartItem newCartItem = new CartItem();
 
-       newCartItem.setCart(cart);
-       newCartItem.setProduct(product);
-       newCartItem.setQuantity(quantity);
+        newCartItem.setCart(cart);
+        newCartItem.setProduct(product);
+        newCartItem.setQuantity(quantity);
 
-       cartItemDAO.save(newCartItem);
-       cartDAO.save(cart);
+        cartItemDAO.save(newCartItem);
+        cartDAO.save(cart);
 
-       return modelMapper.map(cart, CartDTO.class);
-   }
+        return modelMapper.map(cart, CartDTO.class);
+    }
 
     private Cart createCart(UserDetails userDetails) {
-
-       logger.info("User details: {}", userDetails);
+        logger.info("Finding cart for user `{}` with role `{}`", userDetails.getUsername(), userDetails.getRoles());
         Cart userCart = cartDAO.findCartByUsername(userDetails.getUsername());
-        System.out.println("User cart: " + userCart);
+        logger.info("User cart: {}", userCart);
 
         User user = userDAO.findById(userDetails.getUsername()).orElse(null);
 
         if (userCart != null) {
-            System.out.println("User cart found");
+            logger.info("User cart found");
             return userCart; // Return existing cart if it exists
         }
 
-        System.out.println("User cart not found");
+        logger.info("User cart not found. Creating new cart...");
 
         // Create a new cart and associate it with the logged-in user
         Cart cart = new Cart();
@@ -95,6 +94,7 @@ public class CartService {
     }
 
     public CartDTO getCart(String username) {
+        logger.info("Finding cart for user: {}", username);
         Cart cart = cartDAO.findCartByUsername(username);
 
         if (cart == null) {
@@ -103,6 +103,4 @@ public class CartService {
 
         return modelMapper.map(cart, CartDTO.class);
     }
-
-
 }

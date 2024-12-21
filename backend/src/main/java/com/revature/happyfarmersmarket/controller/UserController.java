@@ -3,6 +3,8 @@ package com.revature.happyfarmersmarket.controller;
 import com.revature.happyfarmersmarket.exception.RegistrationException;
 import com.revature.happyfarmersmarket.model.*;
 import com.revature.happyfarmersmarket.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/v1")
 public class UserController {
+    private static final Logger logger = LogManager.getLogger();
     private final UserService userService;
 
     @Autowired
@@ -44,6 +47,7 @@ public class UserController {
                 return ResponseEntity.status(201).body(response);
             } else return ResponseEntity.internalServerError().build();
         } catch (RegistrationException e) {
+            logger.info("User registration failed! Error: {}", e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

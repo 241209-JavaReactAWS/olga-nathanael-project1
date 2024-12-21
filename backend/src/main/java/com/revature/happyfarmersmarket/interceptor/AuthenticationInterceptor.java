@@ -41,11 +41,17 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         logger.info("Received {} request at endpoint '{}'", request.getMethod(), request.getRequestURI());
+
         if (request.getMethod().equals("OPTIONS")) return true;
-        if (OPEN_ENDPOINTS.stream().anyMatch((path) -> pathMatcher.match(path, request.getRequestURI()))) return true;
+
+        if (OPEN_ENDPOINTS.stream().anyMatch((path) -> pathMatcher.match(path, request.getRequestURI()))) {
+            logger.info("Endpoint is an OPEN ENDPOINT");
+            return true;
+        }
 
         String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            logger.info("Received an invalid authorization header: {}", authorizationHeader);
             response.sendError(401, "Invalid authorization header");
             return false;
         }
@@ -54,23 +60,31 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         Optional<Claims> claims = this.jwtService.verifyToken(token);
 
         if (claims.isPresent()) {
-
             String username = claims.get().getSubject();
             String roles = claims.get().get("role").toString();
+
+            logger.info("The authenticated user is `{}` with role `{}`", username, roles);
 
             UserDetails userDetails = new UserDetails(username, roles);
 
             request.setAttribute("userDetails", userDetails);
 
             if (pathMatcher.match("/api/v*/admin/**", request.getRequestURI())) {
+                logger.info("User is requesting to access an admin endpoint `{}`", request.getRequestURI());
                 boolean isUserAdmin = claims.get().get("role").equals("admin");
                 if (isUserAdmin) return true;
                 else {
+                    logger.error("User does not have the required privileges.");
                     response.sendError(403, "User does not have the required privileges.");
                     return false;
                 }
             } else return true;
-        } else response.sendError(401, "Invalid authorization token");
+        } else {
+            logger.info("Sending 401 Response...");
+            response.sendError(401, "Invalid authorization token");
+        }
+
+        logger.info("User did not succeed with the endpoint verification process.");
         return false;
     }
 
