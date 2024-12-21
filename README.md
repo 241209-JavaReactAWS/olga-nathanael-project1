@@ -9,11 +9,12 @@ We developed the following user stories to accomplish this:
 1. Users should be able to register for an account and log in with said account.
 2. Users should be able to view the grocery items for sale without logging in.
 3. Users should be able to view product description pages after clicking on an item for sale.
-4. Users should be able to add products to their cart. Products added to the cart should be stored in the database so that the items remain in their cart between sessions.
-5. Admin users should be able to modify the items for sale, including the name, description, price, and quantity on hand.
-6. Admin users should be able to add new products for sale and remove products no longer for sale.
+4. Users should be able to add and remove products from their cart. Products added to the cart should be stored in the database so that the items remain in their cart between sessions.
+5. Admin users should be able to add new products for sale and remove products no longer for sale.
+6. Admin users should be able to modify the items for sale, including the name, description, price, and quantity on hand.
 7. Users should be able to reset their password if they forget it.
 8. User passwords should be salted and hashed before storing them in the database.
+9. Actions should be logged to a logfile for tracing and accountability purposes.
 
 # Technologies Used
 This full stack web application uses the following languages and technologies:
