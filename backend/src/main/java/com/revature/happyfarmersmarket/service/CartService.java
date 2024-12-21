@@ -11,6 +11,7 @@ import com.revature.happyfarmersmarket.model.CartItem;
 import com.revature.happyfarmersmarket.model.Product;
 import com.revature.happyfarmersmarket.model.User;
 import com.revature.happyfarmersmarket.payload.CartDTO;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
@@ -19,6 +20,8 @@ import org.modelmapper.ModelMapper;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.List;
 
 @Service
 public class CartService {
@@ -39,6 +42,7 @@ public class CartService {
         this.modelMapper = modelMapper;
     }
 
+    @Transactional
     public CartDTO addProductToCart(Integer productId, Integer quantity, UserDetails userDetails ) {
        Cart cart = createCart(userDetails);
 
@@ -68,7 +72,9 @@ public class CartService {
        cartItemDAO.save(newCartItem);
        cartDAO.save(cart);
 
-       return modelMapper.map(cart, CartDTO.class);
+       Cart updatedCart = cartDAO.findCartByUsername(cart.getUser().getUsername());
+
+       return modelMapper.map(updatedCart, CartDTO.class);
    }
 
     private Cart createCart(UserDetails userDetails) {
@@ -105,4 +111,47 @@ public class CartService {
     }
 
 
+    public CartDTO updateProductQuantityInCart(Integer productId, Integer quantity, UserDetails userDetails) {
+
+        Cart cart = cartDAO.findCartByUsername(userDetails.getUsername());
+
+        Integer cartId = cart.getCartId();
+
+        Product product = productDAO.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
+
+        if (product.getQuantityOnHand() == 0) {
+            throw new APIException(product.getName() + "is not available");
+        }
+
+        if ( product.getQuantityOnHand() < quantity ) {
+            throw new APIException("Only " + product.getQuantityOnHand() + " items available");
+        }
+
+        CartItem cartItem = cartItemDAO.findCartItemByProductIdAndCartId(cartId, productId);
+
+        cartItem.setQuantity(quantity);
+
+        cartDAO.save(cart);
+
+        cartItemDAO.save(cartItem);
+
+        return modelMapper.map(cart, CartDTO.class);
+
+    }
+
+    @Transactional
+    public String deleteProductFromCart(Integer cartId, Integer productId) {
+
+        CartItem cartItem = cartItemDAO.findCartItemByProductIdAndCartId(cartId, productId);
+
+        if (cartItem == null) {
+            throw new ResourceNotFoundException("Product", "productId", productId);
+        }
+
+        cartItemDAO.deleteCartItemByProductIdAndCartId(cartId, productId);
+
+        return "Product " + cartItem.getProduct().getName() + " removed from the cart.";
+
+    }
 }
