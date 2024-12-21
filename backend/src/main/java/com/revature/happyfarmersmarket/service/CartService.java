@@ -42,6 +42,7 @@ public class CartService {
         this.modelMapper = modelMapper;
     }
 
+    @Transactional
     public CartDTO addProductToCart(Integer productId, Integer quantity, UserDetails userDetails ) {
        Cart cart = createCart(userDetails);
 
@@ -71,7 +72,9 @@ public class CartService {
        cartItemDAO.save(newCartItem);
        cartDAO.save(cart);
 
-       return modelMapper.map(cart, CartDTO.class);
+       Cart updatedCart = cartDAO.findCartByUsername(cart.getUser().getUsername());
+
+       return modelMapper.map(updatedCart, CartDTO.class);
    }
 
     private Cart createCart(UserDetails userDetails) {
@@ -129,33 +132,22 @@ public class CartService {
 
         cartItem.setQuantity(quantity);
 
-        cart.setTotalPrice(cart.getTotalPrice() + (product.getPrice() * quantity));
-
         cartDAO.save(cart);
 
-        CartItem updatedItem = cartItemDAO.save(cartItem);
+        cartItemDAO.save(cartItem);
 
-        CartDTO cartDTO = modelMapper.map(cart, CartDTO.class);
-
-        List<CartItem> cartItems = cart.getCartItems();
-
-        return cartDTO;
+        return modelMapper.map(cart, CartDTO.class);
 
     }
 
     @Transactional
     public String deleteProductFromCart(Integer cartId, Integer productId) {
 
-        Cart cart = cartDAO.findById(cartId)
-                .orElseThrow(() -> new ResourceNotFoundException("Cart", "cartId", cartId));
-
         CartItem cartItem = cartItemDAO.findCartItemByProductIdAndCartId(cartId, productId);
 
         if (cartItem == null) {
             throw new ResourceNotFoundException("Product", "productId", productId);
         }
-
-//        cart.setTotalPrice(cart.getTotalPrice() - (cartItem.getCartItemId()));
 
         cartItemDAO.deleteCartItemByProductIdAndCartId(cartId, productId);
 
