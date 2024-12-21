@@ -5,6 +5,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -15,6 +17,8 @@ import java.util.Optional;
 
 @Service
 public class JwtService {
+    private static final Logger logger = LogManager.getLogger();
+
     private final SecretKey secretKey;
     private final JwtParser jwtParser;
 
@@ -24,14 +28,20 @@ public class JwtService {
     }
 
     public Optional<Claims> verifyToken(JwtToken token) {
+        logger.info("Verifying authentication token..");
         try {
-            return Optional.of(this.jwtParser.parseSignedClaims(token.token()).getPayload());
+            Claims claims = this.jwtParser.parseSignedClaims(token.token()).getPayload();
+            logger.info("Successfully verified authentication token.");
+            return Optional.of(claims);
         } catch (JwtException | IllegalArgumentException e) {
+            logger.error("Token failed verification with exception: {}", e.getMessage());
+            logger.error(e);
             return Optional.empty();
         }
     }
 
     public JwtToken generateToken(String subject, String role) {
+        logger.info("Generating new authentication token for user `{}` with role `{}`", subject, role);
         return this.generateToken(subject, Map.of("role", role));
     }
 

@@ -1,4 +1,5 @@
 package com.revature.happyfarmersmarket.service;
+
 import com.revature.happyfarmersmarket.dao.CartDAO;
 import com.revature.happyfarmersmarket.dao.CartItemDAO;
 import com.revature.happyfarmersmarket.dao.ProductDAO;
@@ -44,33 +45,34 @@ public class CartService {
 
     @Transactional
     public CartDTO addProductToCart(Integer productId, Integer quantity, UserDetails userDetails ) {
-       Cart cart = createCart(userDetails.getUsername());
+        logger.info("Adding product with id `{}` to user `{}`'s cart. Quantity: {}", productId, userDetails.getUsername(), quantity);
+        Cart cart = createCart(userDetails.getUsername());
 
-       Product product = productDAO.findById(productId)
-               .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
+        Product product = productDAO.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
 
-       CartItem cartItem = cartItemDAO.findCartItemByProductIdAndCartId(cart.getCartId(), productId);
+        CartItem cartItem = cartItemDAO.findCartItemByProductIdAndCartId(cart.getCartId(), productId);
 
-       if (cartItem != null) {
-           throw new APIException("Product " + product.getName() + "already exists in the cart");
-       }
+        if (cartItem != null) {
+            throw new APIException("Product " + product.getName() + "already exists in the cart");
+        }
 
         if (product.getQuantityOnHand() < quantity) {
             throw new APIException("Only " + product.getQuantityOnHand() + " left in stock.");
         }
 
-       if (product.getQuantityOnHand() == 0) {
-           throw new APIException("SOLD OUT");
-       }
+        if (product.getQuantityOnHand() == 0) {
+            throw new APIException("SOLD OUT");
+        }
 
-       CartItem newCartItem = new CartItem();
+        CartItem newCartItem = new CartItem();
 
-       newCartItem.setCart(cart);
-       newCartItem.setProduct(product);
-       newCartItem.setQuantity(quantity);
+        newCartItem.setCart(cart);
+        newCartItem.setProduct(product);
+        newCartItem.setQuantity(quantity);
 
-       cartItemDAO.save(newCartItem);
-       cartDAO.save(cart);
+        cartItemDAO.save(newCartItem);
+        cartDAO.save(cart);
 
        Cart updatedCart = cartDAO.findCartByUsername(cart.getUser().getUsername());
 
@@ -78,19 +80,18 @@ public class CartService {
    }
 
     public Cart createCart(String username) {
-
-       logger.info("Username: {}", username);
+        logger.info("Finding cart for user: {}", username);
         Cart userCart = cartDAO.findCartByUsername(username);
         System.out.println("User cart: " + userCart);
 
         User user = userDAO.findById(username).orElse(null);
 
         if (userCart != null) {
-            System.out.println("User cart found");
+            logger.info("User cart found");
             return userCart; // Return existing cart if it exists
         }
 
-        System.out.println("User cart not found");
+        logger.info("User cart not found. Creating new cart...");
 
         // Create a new cart and associate it with the logged-in user
         Cart cart = new Cart();
@@ -101,6 +102,7 @@ public class CartService {
     }
 
     public CartDTO getCart(String username) {
+        logger.info("Getting cart for user: {}", username);
         Cart cart = cartDAO.findCartByUsername(username);
 
         if (cart == null) {
