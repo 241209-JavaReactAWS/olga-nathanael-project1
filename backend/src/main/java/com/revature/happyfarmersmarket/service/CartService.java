@@ -11,6 +11,7 @@ import com.revature.happyfarmersmarket.model.CartItem;
 import com.revature.happyfarmersmarket.model.Product;
 import com.revature.happyfarmersmarket.model.User;
 import com.revature.happyfarmersmarket.payload.CartDTO;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
@@ -19,6 +20,8 @@ import org.modelmapper.ModelMapper;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.List;
 
 @Service
 public class CartService {
@@ -109,4 +112,58 @@ public class CartService {
     }
 
 
+    public CartDTO updateProductQuantityInCart(Integer productId, Integer quantity, UserDetails userDetails) {
+
+        Cart cart = cartDAO.findCartByUsername(userDetails.getUsername());
+
+        Integer cartId = cart.getCartId();
+
+        Product product = productDAO.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
+
+        if (product.getQuantityOnHand() == 0) {
+            throw new APIException(product.getName() + "is not available");
+        }
+
+        if ( product.getQuantityOnHand() < quantity ) {
+            throw new APIException("Only " + product.getQuantityOnHand() + " items available");
+        }
+
+        CartItem cartItem = cartItemDAO.findCartItemByProductIdAndCartId(cartId, productId);
+
+        cartItem.setQuantity(quantity);
+
+        cart.setTotalPrice(cart.getTotalPrice() + (product.getPrice() * quantity));
+
+        cartDAO.save(cart);
+
+        CartItem updatedItem = cartItemDAO.save(cartItem);
+
+        CartDTO cartDTO = modelMapper.map(cart, CartDTO.class);
+
+        List<CartItem> cartItems = cart.getCartItems();
+
+        return cartDTO;
+
+    }
+
+    @Transactional
+    public String deleteProductFromCart(Integer cartId, Integer productId) {
+
+        Cart cart = cartDAO.findById(cartId)
+                .orElseThrow(() -> new ResourceNotFoundException("Cart", "cartId", cartId));
+
+        CartItem cartItem = cartItemDAO.findCartItemByProductIdAndCartId(cartId, productId);
+
+        if (cartItem == null) {
+            throw new ResourceNotFoundException("Product", "productId", productId);
+        }
+
+//        cart.setTotalPrice(cart.getTotalPrice() - (cartItem.getCartItemId()));
+
+        cartItemDAO.deleteCartItemByProductIdAndCartId(cartId, productId);
+
+        return "Product " + cartItem.getProduct().getName() + " removed from the cart.";
+
+    }
 }
