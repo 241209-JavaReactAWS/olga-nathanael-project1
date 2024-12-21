@@ -24,7 +24,4 @@ public class Product {
     private int quantityOnHand;
     @Column(length = 100000)
     private String imageURL;
-
-    @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
-    private List<CartItem> products = new ArrayList<>();
 }

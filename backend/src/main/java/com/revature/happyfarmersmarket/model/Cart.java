@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @Data
@@ -30,6 +28,14 @@ public class Cart {
     @OneToMany(mappedBy = "cart", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
     private List<CartItem> cartItems = new ArrayList<>();
 
-    private Double totalPrice =0.0;
+    @Transient
+    private Double totalPrice = 0.0;
 
+    public Double getTotalPrice() {
+        return cartItems.stream().mapToDouble((item) -> item.getProduct().getPrice() * item.getQuantity()).sum();
+    }
+
+    private void setTotalPrice(Double price) {
+        this.totalPrice = price;
+    }
 }

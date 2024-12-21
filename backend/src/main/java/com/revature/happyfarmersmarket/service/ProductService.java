@@ -10,9 +10,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -33,12 +33,13 @@ public class ProductService {
 
     public ProductResponse getAllProducts() {
         List<Product> products = productDAO.findAll();
-        List<ProductDTO> productDTOS = products.stream()
+        List<ProductDTO> productDTOS = new java.util.ArrayList<>(products.stream()
                 .map(product -> modelMapper.map(product, ProductDTO.class))
-                .toList();
+                .toList());
+        productDTOS.sort(Comparator.comparingInt(ProductDTO::getId));
 
         ProductResponse productResponse = new ProductResponse();
-        productResponse.setData( productDTOS);
+        productResponse.setData(productDTOS);
 
         return productResponse;
     }

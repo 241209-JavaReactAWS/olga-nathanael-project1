@@ -69,9 +69,6 @@ public class CartService {
        newCartItem.setQuantity(quantity);
 
        cartItemDAO.save(newCartItem);
-
-       cart.setTotalPrice(cart.getTotalPrice() + (product.getPrice() * quantity));
-
        cartDAO.save(cart);
 
        return modelMapper.map(cart, CartDTO.class);
@@ -94,7 +91,6 @@ public class CartService {
 
         // Create a new cart and associate it with the logged-in user
         Cart cart = new Cart();
-        cart.setTotalPrice(0.00); // Default value for a new cart
         cart.setUser(user);  // Associate with logged user
 
         // Save the newly created cart to the database

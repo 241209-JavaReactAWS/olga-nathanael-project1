@@ -25,7 +25,7 @@ export default function ProductTable() {
     const updateProductsListing = useCallback(() => {
         postman.get('/products')
             .then((response) => {
-                setProducts(response.data)
+                setProducts(response.data.data)
             }).catch((error) => {
             console.log(error)
             onError('Something\'s not working right now. Please try again later.')
