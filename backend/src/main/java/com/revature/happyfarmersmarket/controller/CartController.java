@@ -33,7 +33,7 @@ public class CartController {
        return new ResponseEntity<>(cartDTO, HttpStatus.OK);
     }
 
-    @PutMapping("/cart/products/{productId}/quantity/{quantity}")
+    @PutMapping("/carts/products/{productId}/quantity/{quantity}")
     public ResponseEntity<CartDTO> updateCartProduct(@PathVariable Integer productId,
                                                      @PathVariable Integer quantity,
                                                      @RequestAttribute("userDetails") UserDetails userDetails) {
