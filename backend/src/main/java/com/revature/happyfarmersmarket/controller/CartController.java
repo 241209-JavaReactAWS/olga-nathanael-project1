@@ -50,5 +50,9 @@ public class CartController {
         return new ResponseEntity<String>(status, HttpStatus.OK);
     }
 
-
+    @PostMapping("/carts/checkout")
+    public ResponseEntity<?> checkout(@RequestAttribute UserDetails userDetails) {
+        this.cartService.checkout(userDetails.getUsername());
+        return ResponseEntity.ok().build();
+    }
 }
