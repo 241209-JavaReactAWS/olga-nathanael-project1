@@ -3,7 +3,7 @@ import CartItem from "../../components/cart-item/CartItem";
 import { useNavigate } from 'react-router-dom';
 
 import './cart.css'
-import {postman} from '../../postman'
+import { postman } from '../../postman'
 
 
 const Cart: React.FC = () => {
@@ -75,6 +75,7 @@ const Cart: React.FC = () => {
         if (response.ok) {
             const data = await response.json();
             setCartTotal(data.totalPrice);
+            setCartItems(data.cartItems);
         }
     }
 
