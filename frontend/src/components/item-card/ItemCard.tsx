@@ -18,23 +18,22 @@ const ItemCard: React.FC<Props> = ({ item }) => {
     const [quantity, setQuantity] = useState(1);
 
     function handleItemClick() {
-        console.log('Item clicked', item.id);
         navigate(`/product/${item.id}`, { state: { product: item } });
 
     }
 
     async function handleAddToCart() {
-        console.log('Add to cart clicked', quantity);
 
-        // const response = await fetch(`http://localhost:8080/api/v1/carts/products/${item.id}/quantity/${quantity}`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        // });
+        const response = await fetch(`http://localhost:8080/api/v1/carts/products/${item.id}/quantity/${quantity}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+            },
+        });
 
-        // const data = await response.json();
-        // console.log('Add to cart response', data);
+        const data = await response.json();
+        console.log('Add to cart response', data);
     }
 
     const handleQuantityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

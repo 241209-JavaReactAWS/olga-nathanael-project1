@@ -15,17 +15,11 @@ interface Product {
 const AllProducts: React.FC<Props> = () => {
   const [products, setProducts] = React.useState<Product[]>([]);
 
-  console.log('AllProducts');
-
   useEffect(() => {
-
-    console.log('useEffect');
-
 
     const fetchProducts = async () => {
       const response = await fetch('http://localhost:8080/api/v1/products');
       const data = await response.json();
-      console.log(data.data);
       setProducts(data.data);
     };
 

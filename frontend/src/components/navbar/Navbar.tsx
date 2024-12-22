@@ -1,6 +1,6 @@
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import './Navbar.css'
-import {useAuth} from '../../hooks/useAuth'
+import { useAuth } from '../../hooks/useAuth'
 
 export default function Navbar() {
     const auth = useAuth()

@@ -1,5 +1,5 @@
-import React from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import './productDetails.css';
 
@@ -14,38 +14,61 @@ interface Product {
 }
 
 const Product: React.FC<Props> = () => {
-  const { id } = useParams<{ id: string }>();
-
-  console.log('id', id);
 
   const location = useLocation();
   const product = location.state?.product as Product;
+  const [quantity, setQuantity] = useState(1);
+
+  async function handleAddToCart() {
+
+    const response = await fetch(`http://localhost:8080/api/v1/carts/products/${product.id}/quantity/${quantity}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+      },
+    });
+
+    const data = await response.json();
+    console.log('Add to cart response', data);
+  }
+
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setQuantity(parseInt(e.target.value));
+  };
 
   return (
     <main>
       <section className="item-details-container">
         <div>
-          <img
+          <img className="item-details-image"
             src={product.imageURL}
             alt={product.name}
-
-            width="300"
           />
         </div>
         <div className="meal-details">
-          <h2 className='item-name'>Organic Whole Turkey</h2>
+          <h2 className='item-name'>{product.name}</h2>
           <p>QTY.</p>
-          <select className="qty-select" name="" id="">
+          <select
+            className="qty-select"
+            name="quantity"
+            id={`quantity-${product.id}`}
+            onChange={handleQuantityChange}
+          >
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
           </select>
           <p>{`$${product.price}`}</p>
-          <button>Add to Cart</button>
-          <p>Details</p>
-          <p>
-            Description: {product.description}
-          </p>
+          <button
+            onClick={handleAddToCart}
+          >
+            Add to Cart
+          </button>
+          <div>
+            Details:
+            <p>{product.description}</p>
+          </div>
         </div>
       </section>
     </main>

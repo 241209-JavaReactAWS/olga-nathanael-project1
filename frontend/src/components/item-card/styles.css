@@ -37,7 +37,7 @@
 }
 
 .qty-select {
-  padding: 10px;
+  /* padding: 10px;
   border: 1px solid #ccc;
   border-radius: 2px;
   font-size: 1rem;
@@ -46,11 +46,11 @@
   cursor: pointer;
   background-color: #2b8739;
   width: 70px;
-  height: 30px;
+  height: 30px; */
 }
 
 .qty-select:hover {
-  background-color: #54e810;
+  /* background-color: #54e810; */
 }
 
 .add-to-cart-btn {
@@ -66,7 +66,7 @@
 }
 
 .add-to-cart-btn:hover {
-  background-color: #54e810;
+  background: linear-gradient(to top, #2b8739, #54e810);
 }
 
 .item-image {
