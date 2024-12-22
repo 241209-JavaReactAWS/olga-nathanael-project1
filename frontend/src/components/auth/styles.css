@@ -17,11 +17,12 @@
 }
 
 .form-container {
-  background-color: white;
+  background-color: whitesmoke;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: auto;
+  opacity: 95%;
 }
 
 .form {
@@ -70,7 +71,7 @@
 }
 
 .form button:hover {
-  background-color: #54e810;
+  background: linear-gradient(to top, #2b8739, #54e810);
 }
 
 .form-actions {

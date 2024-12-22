@@ -1,17 +1,17 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import "./Login.css"
-import Button, {ButtonStyle} from '../../components/button/Button'
-import {useNavigate} from 'react-router-dom'
-import {postman} from '../../postman'
-import {JwtPayload} from 'jwt-decode'
-import {useAuth} from '../../hooks/useAuth'
-import {jwtDecode} from 'jwt-decode'
+import Button, { ButtonStyle } from '../../components/button/Button'
+import { useNavigate } from 'react-router-dom'
+import { postman } from '../../postman'
+import { JwtPayload } from 'jwt-decode'
+import { useAuth } from '../../hooks/useAuth'
+import { jwtDecode } from 'jwt-decode'
 
 // @ts-ignore
 import produceImage from "../../images/fresh-produce.jpg"
 
-interface Props {}
-interface IJwtPayload extends JwtPayload{
+interface Props { }
+interface IJwtPayload extends JwtPayload {
     role?: string,
 }
 
@@ -50,17 +50,17 @@ const Login: React.FC<Props> = () => {
     }
 
     return (
-        <div id="login" style={{backgroundImage: `url(${produceImage})`}}>
+        <div id="login" style={{ backgroundImage: `url(${produceImage})` }}>
             <div id="loginForm">
                 <h2>Login</h2>
                 <div className="formField">
                     <label id="usernameFieldLabel" htmlFor="username">Username</label>
-                    <input name="username" value={username} onChange={(e) => setUsername(e.target.value)}/>
+                    <input name="username" value={username} onChange={(e) => setUsername(e.target.value)} />
                 </div>
 
                 <div className="formField">
                     <label htmlFor="password">Password</label>
-                    <input name="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                    <input name="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 </div>
 
                 {/*<div id='rememberMeDiv'>*/}
@@ -72,8 +72,8 @@ const Login: React.FC<Props> = () => {
                     <p>Error: {error}</p>
                 </div>}
 
-                <Button style={ButtonStyle.SECONDARY} onClick={() => navigate('/forgot-password')}>Forgot Password</Button>
                 <Button style={ButtonStyle.PRIMARY} onClick={handleSubmit}>Login</Button>
+                <Button style={ButtonStyle.SECONDARY} onClick={() => navigate('/forgot-password')}>Forgot Password</Button>
             </div>
         </div>
     );
