@@ -3,6 +3,7 @@ import CartItem from "../../components/cart-item/CartItem";
 import { useNavigate } from 'react-router-dom';
 
 import './cart.css'
+import {postman} from '../../postman'
 
 
 const Cart: React.FC = () => {
@@ -84,7 +85,8 @@ const Cart: React.FC = () => {
 
     function handleCheckoutClick() {
         // Redirect to checkout page
-        navigate('/order-success')
+        postman.post('/carts/checkout')
+            .then(() => navigate('/order-success'))
     }
 
     return (
