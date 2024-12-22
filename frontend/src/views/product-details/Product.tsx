@@ -26,18 +26,21 @@ const Product: React.FC<Props> = () => {
     open: false,
   });
 
+  function showSnackbar(style: SnackbarStyle, message: string) {
+    setSnackbar({
+      style: style,
+      message: message,
+      open: true
+    });
+
+    setTimeout(() => setSnackbar((prev) => {
+      return {...prev, open: false}
+    }), 5000);
+  }
+
   async function handleAddToCart() {
     if (!auth.isAuthenticated) {
-      setSnackbar({
-        style: SnackbarStyle.WARNING,
-        message: 'You must be signed in to perform this action!',
-        open: true
-      });
-
-      setTimeout(() => setSnackbar(prev => {
-        return {...prev, open: false}
-      }), 5000);
-
+      showSnackbar(SnackbarStyle.WARNING, 'You must be signed in to perform this action!')
       return;
     }
 
@@ -49,8 +52,8 @@ const Product: React.FC<Props> = () => {
       },
     });
 
-    const data = await response.json();
-    console.log('Add to cart response', data);
+    if (response.ok) showSnackbar(SnackbarStyle.SUCCESS, 'Item added successfully!')
+    else showSnackbar(SnackbarStyle.ERROR, 'Unable to add item to cart.')
   }
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
