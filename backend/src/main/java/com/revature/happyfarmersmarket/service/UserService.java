@@ -19,13 +19,16 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final UserDAO userDAO;
+    private final CartService cartService;
     private final SecurityQuestionDAO securityQuestionDAO;
 
     @Autowired
-    public UserService(PasswordEncoder passwordEncoder, JwtService jwtService, UserDAO userDAO, SecurityQuestionDAO securityQuestionDAO) {
+    public UserService(PasswordEncoder passwordEncoder, JwtService jwtService, UserDAO userDAO,
+                       CartService cartService, SecurityQuestionDAO securityQuestionDAO) {
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.userDAO = userDAO;
+        this.cartService = cartService;
         this.securityQuestionDAO = securityQuestionDAO;
     }
 
@@ -62,7 +65,12 @@ public class UserService {
 
         newUser.setRole("customer"); // sets all roles to customer
 
-        return this.userDAO.save(newUser);
+        User registeredUser = this.userDAO.save(newUser);
+
+        // creates a cart for the user upon registration
+        this.cartService.createCart(registeredUser.getUsername());
+
+        return registeredUser;
     }
 
     public JwtToken loginUser(User user) {
