@@ -1,30 +1,67 @@
+import React, { useState } from 'react';
 import './cart-item.css';
 
-const CartItem = () => {
+interface CartItemProps {
+    cartItem: {
+        product: {
+            id: number;
+            name: string;
+            imageURL: string;
+            price: number;
+        };
+        quantity: number;
+    };
+    removeItem: (productId: number) => void;
+    updateItem: (e: React.ChangeEvent<HTMLSelectElement>, productId: number) => void;
+}
+
+const CartItem = ({ cartItem, removeItem, updateItem }: CartItemProps) => {
+
+    const [quantity, setQuantity] = useState(cartItem.quantity);
+
+    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setQuantity(parseInt(e.target.value));
+        updateItem(e, cartItem.product.id);
+    }
+
+
     return (
         <div>
             <section className="cart-item-container">
                 <div>
                     <img
-                        src="https://images.ctfassets.net/lufu0clouua1/Cpno7p5su5gH1hphtMEz5/c6d201efa4cd6794b1ff3cf973719d6f/2024_ultimate-holiday-meal-beauty-shot-NO-PIE.jpg"
-                        alt="Item Name"
-                        width="300"
+                        src={cartItem.product.imageURL}
+                        alt={cartItem.product.name}
                     />
                 </div>
                 <div className="item-details">
-                    <h2 className="item-name">Organic Whole Turkey</h2>
+                    <h2 className="item-name">{cartItem.product.name}</h2>
                     <p>QTY.</p>
-                    <select className="qty-select" name="" id="">
+                    <select
+                        className="qty-select"
+                        name="quantity"
+                        id="quantity"
+                        value={quantity}
+                        onChange={handleChange}
+                    >
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                     </select>
-                    <p>$199.99</p>
+                    <p>${cartItem.product.price}</p>
                 </div>
             </section>
-            <div className="close-button">
+            <div
+                className="close-button"
+                onClick={() => removeItem(cartItem.product.id)}
+            >
                 <span>&times;</span>
-                <button className="remove-btn">Remove</button>
+                <button
+                    className="remove-btn"
+                // onClick={() => removeItem(cartItem.product.id)}
+                >
+                    Remove
+                </button>
             </div>
             <hr className="white-line" />
         </div>

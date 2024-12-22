@@ -23,21 +23,21 @@
   color: #2b8739;
 }
 
-select {
-  padding: 10px;
+.qty-select {
+  /* padding: 10px;
   border: 1px solid #ccc;
   border-radius: 2px;
-  font-size: 1rem;
+  font-size: 2rem;
   color: white;
   outline: none;
   cursor: pointer;
   background-color: #2b8739;
   width: 70px;
-  height: 30px;
+  height: 30px; */
 }
 
 select:hover {
-  background-color: #54e810;
+  /* background-color: #54e810; */
 }
 
 .remove-btn {
@@ -56,6 +56,7 @@ select:hover {
   width: 50px;
   padding-left: 15px;
   padding-bottom: 10px;
+  cursor: pointer;
 }
 
 .close-button:hover {
@@ -65,4 +66,10 @@ select:hover {
 .white-line {
   border: none;
   border-top: 1.5px solid white;
+}
+
+.cart-item-container div img {
+  object-fit: cover;
+  height: 130px;
+  width: 200px;
 }

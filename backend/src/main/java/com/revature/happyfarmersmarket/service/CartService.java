@@ -34,7 +34,7 @@ public class CartService {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public CartService(CartDAO cartDAO, ProductDAO productDAO, CartItemDAO cartItemDAO, UserService userService, UserDAO userDAO, StandardServletMultipartResolver standardServletMultipartResolver, ModelMapper modelMapper) {
+    public CartService(CartDAO cartDAO, ProductDAO productDAO, CartItemDAO cartItemDAO, UserDAO userDAO, ModelMapper modelMapper) {
         this.cartDAO = cartDAO;
         this.productDAO = productDAO;
         this.cartItemDAO = cartItemDAO;
@@ -44,7 +44,7 @@ public class CartService {
 
     @Transactional
     public CartDTO addProductToCart(Integer productId, Integer quantity, UserDetails userDetails ) {
-       Cart cart = createCart(userDetails);
+       Cart cart = createCart(userDetails.getUsername());
 
        Product product = productDAO.findById(productId)
                .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
@@ -77,13 +77,13 @@ public class CartService {
        return modelMapper.map(updatedCart, CartDTO.class);
    }
 
-    private Cart createCart(UserDetails userDetails) {
+    public Cart createCart(String username) {
 
-       logger.info("User details: {}", userDetails);
-        Cart userCart = cartDAO.findCartByUsername(userDetails.getUsername());
+       logger.info("Username: {}", username);
+        Cart userCart = cartDAO.findCartByUsername(username);
         System.out.println("User cart: " + userCart);
 
-        User user = userDAO.findById(userDetails.getUsername()).orElse(null);
+        User user = userDAO.findById(username).orElse(null);
 
         if (userCart != null) {
             System.out.println("User cart found");
