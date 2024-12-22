@@ -14,7 +14,6 @@ import com.revature.happyfarmersmarket.payload.CartDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 
 import org.modelmapper.ModelMapper;
 
@@ -153,5 +152,13 @@ public class CartService {
 
         return "Product " + cartItem.getProduct().getName() + " removed from the cart.";
 
+    }
+
+    @Transactional
+    public void checkout(String username) {
+        logger.info("Removing all items from cart.");
+        Cart cart = this.cartDAO.findCartByUsername(username);
+        List<CartItem> cartItems = cart.getCartItems();
+        cartItems.forEach((cartItem) -> this.deleteProductFromCart(cart.getCartId(), cartItem.getProduct().getId()));
     }
 }

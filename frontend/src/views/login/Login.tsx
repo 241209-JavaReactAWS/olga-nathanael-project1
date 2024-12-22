@@ -3,7 +3,6 @@ import "./Login.css"
 import Button, {ButtonStyle} from '../../components/button/Button'
 import {useNavigate} from 'react-router-dom'
 import {postman} from '../../postman'
-import {AxiosError} from 'axios'
 import {JwtPayload} from 'jwt-decode'
 import {useAuth} from '../../hooks/useAuth'
 import {jwtDecode} from 'jwt-decode'
@@ -42,12 +41,10 @@ const Login: React.FC<Props> = () => {
                 }
                 navigate('/')
             }).catch((error) => {
-                if (error instanceof AxiosError) {
-                    if (error.response && error.response.status === 400) setError(error.response.data)
-                    else if (error.response && error.response.status === 401) setError('Invalid username or password')
-                    else if (error.response && error.response.status === 500) setError('An internal server error occurred. Please try again later.')
-                    else setError('An unexpected error occurred. Please try again later.')
-                } setError('An unexpected error occurred. Please try again later.')
+                if (error.response && error.response.status === 400) setError(error.response.data)
+                else if (error.response && error.response.status === 401) setError('Invalid username or password')
+                else if (error.response && error.response.status === 500) setError('An internal server error occurred. Please try again later.')
+                else setError('An unexpected error occurred. Please try again later.')
             })
         }
     }
