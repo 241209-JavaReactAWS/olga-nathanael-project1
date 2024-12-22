@@ -1,59 +1,73 @@
 #login {
-    display: flex;
-    flex: 1;
-    height: 100%;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
+  display: flex;
+  flex: 1;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
 }
 
 #loginForm {
-    margin: auto;
-    border: 2px solid black;
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    padding: 20px 50px;
-    justify-content: space-evenly;
-    height: 400px;
-    width: 300px;
-    background-color: whitesmoke;
-    opacity: 90%;
+  margin: auto;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+  justify-content: space-evenly;
+  height: 400px;
+  width: 300px;
+  background-color: whitesmoke;
+  opacity: 95%;
 }
 
 .formField {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .formField > input {
-    border-radius: 10px;
-    border: 1px solid black;
-    height: 30px;
-    padding-left: 5px;
-    font-size: 14px;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #319a44;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.formField > label {
+  margin-bottom: 5px;
+  color: #333;
 }
 
 #rememberMeDiv > label {
-    margin-left: 4px;
+  margin-left: 4px;
 }
 
 #submitButton {
-    height: 30px;
-    font-size: 14px;
-    background-color: #319A44;
-    border: 1px solid #319A44;
-    color: white;
+  height: 35px;
+  font-size: 14px;
+  background-color: #319a44;
+  border: 1px solid #319a44;
+  color: white;
 }
 
 #submitButton:hover {
-    background-color: #3BBA52;
+  background: linear-gradient(to top, #2b8739, #54e810);
 }
 
 #errorDiv {
-    background-color: #DC343B;
-    color: white;
-    padding: 10px;
-    border-radius: 20px;
+  background-color: #dc343b;
+  color: white;
+  padding: 10px;
+  border-radius: 20px;
+}
+
+#loginForm h2 {
+  margin-bottom: 10px;
+  color: #2b8739;
+  text-align: center;
+}
+
+.primaryButton {
+  margin-bottom: 20px;
 }

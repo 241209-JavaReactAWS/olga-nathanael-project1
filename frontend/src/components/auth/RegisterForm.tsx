@@ -1,6 +1,6 @@
-import React, {useState, FormEvent, useEffect} from 'react'
+import React, { useState, FormEvent, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
-import {postman} from '../../postman'
+import { postman } from '../../postman'
 import "./styles.css";
 
 // @ts-ignore
@@ -12,7 +12,6 @@ interface FormData {
     firstName: string;
     lastName: string;
     username: string;
-    email: string;
     password: string;
     confirmPassword: string;
     securityQuestion: number;
@@ -35,7 +34,6 @@ const RegisterForm: React.FC<Props> = () => {
         firstName: "",
         lastName: "",
         username: "",
-        email: "",
         password: "",
         confirmPassword: "",
         securityQuestion: 0,
@@ -82,14 +80,6 @@ const RegisterForm: React.FC<Props> = () => {
             isValid = false;
         }
 
-        if (!formData.email.trim()) {
-            newErrors.email = 'Email is required';
-            isValid = false;
-        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-            newErrors.email = 'Email is invalid';
-            isValid = false;
-        }
-
         if (!formData.password) {
             newErrors.password = 'Password is required';
             isValid = false;
@@ -129,7 +119,6 @@ const RegisterForm: React.FC<Props> = () => {
                         firstName: formData.firstName,
                         lastName: formData.lastName,
                         username: formData.username,
-                        email: formData.email,
                         password: formData.password,
                         securityQuestion: formData.securityQuestion,
                         securityAnswer: formData.securityAnswer,
@@ -149,7 +138,6 @@ const RegisterForm: React.FC<Props> = () => {
                         firstName: "",
                         lastName: "",
                         username: "",
-                        email: "",
                         password: "",
                         confirmPassword: "",
                         securityQuestion: 0,
@@ -213,17 +201,6 @@ const RegisterForm: React.FC<Props> = () => {
                     />
                     {errors.username && <span className="error">{errors.username}</span>}
 
-                    <label htmlFor="email">Email</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        required
-                        value={formData.email}
-                        onChange={handleChange}
-                    />
-                    {errors.email && <span className="error">{errors.email}</span>}
-
                     <label htmlFor="password">Password</label>
                     <input
                         type="password"
@@ -247,8 +224,8 @@ const RegisterForm: React.FC<Props> = () => {
                     {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
 
                     <label htmlFor="securityQuestion">Security Question</label>
-                    <select name='securityQuestion' onChange={handleChange} id='securityQuestion' style={{width: '100%'}}>
-                        {securityQuestions.map((q) => <option key={q.id} value={q.id}>{q.securityQuestion}</option> )}
+                    <select name='securityQuestion' onChange={handleChange} id='securityQuestion' style={{ width: '100%' }}>
+                        {securityQuestions.map((q) => <option key={q.id} value={q.id}>{q.securityQuestion}</option>)}
                     </select>
 
                     <label htmlFor="securityAnswer">Security Answer</label>
