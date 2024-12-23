@@ -36,7 +36,7 @@ const RegisterForm: React.FC<Props> = () => {
         username: "",
         password: "",
         confirmPassword: "",
-        securityQuestion: 0,
+        securityQuestion: 1,
         securityAnswer: ""
     });
     const [errors, setErrors] = useState<Partial<FormData>>({});
@@ -140,7 +140,7 @@ const RegisterForm: React.FC<Props> = () => {
                         username: "",
                         password: "",
                         confirmPassword: "",
-                        securityQuestion: 0,
+                        securityQuestion: 1,
                         securityAnswer: ""
                     });
                     navigate("/login");
